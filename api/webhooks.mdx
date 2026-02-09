@@ -1,0 +1,71 @@
+---
+title: Webhooks
+description: Create, update, list, and delete webhooks for real-time event notifications.
+---
+
+<Snippet file="auth-header.mdx" />
+
+All webhook endpoints require **owner** role.
+
+## List webhooks
+
+<ParamField query="page" type="integer" default="1">Page number</ParamField>
+<ParamField query="per_page" type="integer" default="25">Items per page (max 250)</ParamField>
+<ParamField query="sort" type="string">Sort field</ParamField>
+<ParamField query="order" type="string" default="desc">Sort order: `asc` or `desc`</ParamField>
+<ParamField query="status" type="string">Filter by status: `active`, `paused`, or `failed`</ParamField>
+
+```bash
+GET /api/v1/webhooks
+```
+
+## Create a webhook
+
+```bash
+POST /api/v1/webhooks
+```
+
+<ParamField body="url" type="string" required>Webhook endpoint URL (must be HTTPS)</ParamField>
+<ParamField body="events" type="string[]" required>Array of event types to subscribe to</ParamField>
+
+### Available event types
+
+| Event | Trigger |
+|-------|---------|
+| `contact.created` | Contact created |
+| `contact.updated` | Contact updated |
+| `contact.deleted` | Contact deleted |
+| `company.created` | Company created |
+| `company.updated` | Company updated |
+| `deal.created` | Deal created |
+| `deal.updated` | Deal updated |
+| `deal.stage_moved` | Deal stage changed |
+| `interaction.created` | Interaction logged |
+| `commitment.completed` | Commitment completed |
+| `followup.completed` | Follow-up completed |
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/webhooks \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://hooks.example.com/moss",
+    "events": ["contact.created", "deal.stage_moved"]
+  }'
+```
+
+## Update a webhook
+
+```bash
+PATCH /api/v1/webhooks/:id
+```
+
+<ParamField body="url" type="string">Webhook endpoint URL</ParamField>
+<ParamField body="events" type="string[]">Event types to subscribe to</ParamField>
+<ParamField body="status" type="string">Status: `active` or `paused`</ParamField>
+
+## Delete a webhook
+
+```bash
+DELETE /api/v1/webhooks/:id
+```

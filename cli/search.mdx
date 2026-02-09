@@ -1,0 +1,47 @@
+---
+title: search
+description: Full-text search across contacts, companies, deals, and interactions.
+---
+
+## moss search
+
+Search across all entity types using PostgreSQL full-text search.
+
+```bash
+moss search --q "acme enterprise"
+```
+
+```bash
+moss search --q "jane" --types contacts,deals --per-type 10
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--q <query>` | Yes | Search query |
+| `--types <types>` | No | Comma-separated entity types to search: `contacts`, `companies`, `deals`, `interactions` (default: all) |
+| `--per-type <n>` | No | Maximum results per type (default: 5, max: 20) |
+
+### JSON output
+
+```bash
+moss search --q "acme" --json
+```
+
+```json
+{
+  "data": {
+    "contacts": [
+      { "id": "cnt_abc123", "first_name": "Jane", "last_name": "Smith", "email": "jane@acme.com" }
+    ],
+    "companies": [
+      { "id": "cmp_abc123", "name": "Acme Corp", "domain": "acme.com" }
+    ],
+    "deals": [
+      { "id": "deal_abc123", "name": "Acme Corp - Enterprise", "stage": "proposal" }
+    ],
+    "interactions": []
+  }
+}
+```
+
+Results are ranked by relevance using PostgreSQL `tsvector` full-text search with GIN indexes.

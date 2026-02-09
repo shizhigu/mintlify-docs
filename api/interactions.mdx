@@ -1,0 +1,66 @@
+---
+title: Interactions
+description: Log and retrieve interactions — calls, emails, meetings, demos, proposals, and notes.
+---
+
+<Snippet file="auth-header.mdx" />
+
+## List interactions
+
+<ParamField query="page" type="integer" default="1">Page number</ParamField>
+<ParamField query="per_page" type="integer" default="25">Items per page (max 250)</ParamField>
+<ParamField query="sort" type="string">Sort field</ParamField>
+<ParamField query="order" type="string" default="desc">Sort order: `asc` or `desc`</ParamField>
+<ParamField query="q" type="string">Search query</ParamField>
+<ParamField query="contact_id" type="string">Filter by contact ID</ParamField>
+<ParamField query="deal_id" type="string">Filter by deal ID</ParamField>
+<ParamField query="type" type="string">Filter by type: `call`, `email`, `meeting`, `note`, `demo`, `proposal`</ParamField>
+
+```bash
+GET /api/v1/interactions
+```
+
+```bash Example
+curl "https://api.mosscrm.com/api/v1/interactions?contact_id=cnt_abc123&type=meeting" \
+  -H "X-API-Key: moss_k_..."
+```
+
+## Get an interaction
+
+```bash
+GET /api/v1/interactions/:id
+```
+
+## Log an interaction
+
+Interactions are immutable — they can be created and deleted, but not updated.
+
+```bash
+POST /api/v1/interactions
+```
+
+<ParamField body="contact_id" type="string" required>Contact ID (UUID)</ParamField>
+<ParamField body="type" type="string" required>Type: `call`, `email`, `meeting`, `note`, `demo`, or `proposal`</ParamField>
+<ParamField body="deal_id" type="string">Associated deal ID (UUID)</ParamField>
+<ParamField body="notes" type="string">Interaction notes</ParamField>
+<ParamField body="occurred_at" type="string" required>When the interaction occurred (ISO 8601 datetime)</ParamField>
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/interactions \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contact_id": "cnt_abc123",
+    "type": "meeting",
+    "notes": "Discussed Q2 roadmap and SSO requirements",
+    "occurred_at": "2026-02-08T14:00:00Z"
+  }'
+```
+
+## Delete an interaction
+
+```bash
+DELETE /api/v1/interactions/:id
+```
+
+Returns `{ "data": null }` on success.

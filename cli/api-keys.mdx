@@ -1,0 +1,64 @@
+---
+title: key
+description: Create, list, and revoke API keys.
+---
+
+## moss key list
+
+List API keys for the current workspace. Requires owner role.
+
+```bash
+moss key list
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+
+<Note>
+API key values are only shown once at creation time. The list shows key metadata (name, scope, prefix) but not the full key.
+</Note>
+
+## moss key create
+
+Create a new API key. Requires owner role.
+
+```bash
+moss key create --name "ci-deploy" --scope full
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--name <name>` | Yes | Human-readable name for the key |
+| `--scope <scope>` | No | Scope: `full` (default) or `read_only` |
+
+The full API key is displayed once after creation. Store it securely — it cannot be retrieved later.
+
+```bash
+moss key create --name "ci-deploy" --json
+```
+
+```json
+{
+  "data": {
+    "id": "key_abc123",
+    "name": "ci-deploy",
+    "key": "moss_k_abc123...",
+    "scope": "full",
+    "created_at": "2026-02-08T12:00:00Z"
+  }
+}
+```
+
+## moss key revoke
+
+Revoke an API key. Requires owner role. This immediately invalidates the key.
+
+```bash
+moss key revoke --id key_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Key ID |

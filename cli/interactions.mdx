@@ -1,0 +1,68 @@
+---
+title: interaction
+description: Log and view interactions — calls, emails, meetings, and notes.
+---
+
+## moss interaction list
+
+List interactions with optional filtering.
+
+```bash
+moss interaction list
+moss interaction list --contact-id cnt_abc123 --type call
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+| `--sort <field>` | No | Sort field |
+| `--order <dir>` | No | Sort order (`asc` or `desc`) |
+| `--contact-id <id>` | No | Filter by contact |
+| `--deal-id <id>` | No | Filter by deal |
+| `--type <type>` | No | Filter by type (`email`, `call`, `meeting`, `note`) |
+| `--q <query>` | No | Search query |
+
+## moss interaction show
+
+Show details for a single interaction.
+
+```bash
+moss interaction show --id int_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Interaction ID |
+
+## moss interaction log
+
+Log a new interaction. Interactions are immutable — they can be created and deleted, but not updated.
+
+```bash
+moss interaction log \
+  --contact-id cnt_abc123 \
+  --type meeting \
+  --notes "Discussed Q2 roadmap and pricing" \
+  --occurred-at "2026-02-08T14:00:00Z"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--contact-id <id>` | Yes | Contact ID |
+| `--type <type>` | Yes | Type: `email`, `call`, `meeting`, or `note` |
+| `--deal-id <id>` | No | Associated deal ID |
+| `--notes <text>` | No | Interaction notes / content |
+| `--occurred-at <datetime>` | No | When it occurred (ISO datetime) |
+
+## moss interaction delete
+
+Delete an interaction.
+
+```bash
+moss interaction delete --id int_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Interaction ID |

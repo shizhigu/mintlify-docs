@@ -1,0 +1,54 @@
+---
+title: auth
+description: Login, logout, and view current authentication context.
+---
+
+## moss auth login
+
+Save an API key for a workspace.
+
+```bash
+moss auth login --key moss_k_your_api_key_here
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--key <key>` | Yes | API key (`moss_k_...`) |
+| `--workspace <id>` | No | Workspace ID to associate with |
+
+The key is stored in `~/.moss/config.json`. If `--workspace` is provided, it becomes the active workspace.
+
+## moss auth logout
+
+Remove saved credentials.
+
+```bash
+moss auth logout
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--workspace <id>` | No | Workspace to remove (default: active workspace) |
+
+## moss auth whoami
+
+Show the current authentication context — user info and active workspace.
+
+```bash
+moss auth whoami
+```
+
+```bash
+moss auth whoami --json
+```
+
+```json
+{
+  "data": {
+    "user_id": "usr_abc123",
+    "email": "you@example.com",
+    "workspace_id": "ws_abc123",
+    "scope": "full"
+  }
+}
+```

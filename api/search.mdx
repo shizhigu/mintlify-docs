@@ -1,0 +1,58 @@
+---
+title: Search
+description: Full-text search across contacts, companies, deals, and interactions.
+---
+
+<Snippet file="auth-header.mdx" />
+
+## Search
+
+Search across multiple entity types using PostgreSQL full-text search with GIN indexes.
+
+```bash
+GET /api/v1/search
+```
+
+<ParamField query="q" type="string" required>Search query</ParamField>
+<ParamField query="types" type="string">Comma-separated entity types to search: `contacts`, `companies`, `deals`, `interactions`. Defaults to all types.</ParamField>
+<ParamField query="per_type" type="integer" default="5">Maximum results per type (max 20)</ParamField>
+
+```bash Example
+curl "https://api.mosscrm.com/api/v1/search?q=acme&types=contacts,deals&per_type=10" \
+  -H "X-API-Key: moss_k_..."
+```
+
+### Response
+
+```json
+{
+  "data": {
+    "contacts": [
+      {
+        "id": "cnt_abc123",
+        "first_name": "Jane",
+        "last_name": "Smith",
+        "email": "jane@acme.com"
+      }
+    ],
+    "companies": [
+      {
+        "id": "cmp_abc123",
+        "name": "Acme Corp",
+        "domain": "acme.com"
+      }
+    ],
+    "deals": [
+      {
+        "id": "deal_abc123",
+        "name": "Acme Corp - Enterprise",
+        "stage": "proposal",
+        "value": 5000000
+      }
+    ],
+    "interactions": []
+  }
+}
+```
+
+Results are ranked by relevance. Each entity type returns up to `per_type` results.

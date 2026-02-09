@@ -1,0 +1,78 @@
+---
+title: webhook
+description: Create, update, list, and delete webhooks.
+---
+
+## moss webhook list
+
+List webhooks for the current workspace. Requires owner role.
+
+```bash
+moss webhook list
+moss webhook list --status active
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+| `--status <status>` | No | Filter by status: `active`, `paused` |
+
+## moss webhook create
+
+Create a new webhook. Requires owner role.
+
+```bash
+moss webhook create \
+  --url "https://hooks.example.com/moss" \
+  --events "contact.created,deal.stage_moved"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--url <url>` | Yes | Webhook endpoint URL |
+| `--events <events>` | Yes | Comma-separated event types |
+
+### Available event types
+
+| Event | Trigger |
+|-------|---------|
+| `contact.created` | Contact created |
+| `contact.updated` | Contact updated |
+| `contact.deleted` | Contact deleted |
+| `company.created` | Company created |
+| `company.updated` | Company updated |
+| `deal.created` | Deal created |
+| `deal.updated` | Deal updated |
+| `deal.stage_moved` | Deal stage changed |
+| `interaction.created` | Interaction logged |
+| `commitment.completed` | Commitment completed |
+| `followup.completed` | Follow-up completed |
+
+## moss webhook update
+
+Update an existing webhook. Requires owner role.
+
+```bash
+moss webhook update --id wh_abc123 --status paused
+moss webhook update --id wh_abc123 --events "contact.created,contact.updated"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Webhook ID |
+| `--url <url>` | No | Webhook endpoint URL |
+| `--events <events>` | No | Comma-separated event types |
+| `--status <status>` | No | Status: `active` or `paused` |
+
+## moss webhook delete
+
+Delete a webhook. Requires owner role.
+
+```bash
+moss webhook delete --id wh_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Webhook ID |

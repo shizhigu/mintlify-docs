@@ -1,0 +1,72 @@
+---
+title: Activity
+description: View activity timelines for contacts and deals.
+---
+
+<Snippet file="auth-header.mdx" />
+
+## Contact activity
+
+Get the activity timeline for a contact — interactions, deal changes, follow-ups, and commitments in chronological order.
+
+```bash
+GET /api/v1/contacts/:id/activity
+```
+
+<ParamField query="page" type="integer" default="1">Page number</ParamField>
+<ParamField query="per_page" type="integer" default="25">Items per page (max 250)</ParamField>
+
+```bash Example
+curl "https://api.mosscrm.com/api/v1/contacts/cnt_abc123/activity" \
+  -H "X-API-Key: moss_k_..."
+```
+
+### Response
+
+```json
+{
+  "data": [
+    {
+      "type": "interaction",
+      "event": "meeting logged",
+      "timestamp": "2026-02-08T14:00:00Z",
+      "details": {
+        "interaction_id": "int_abc123",
+        "notes": "Discussed Q2 roadmap"
+      }
+    },
+    {
+      "type": "deal",
+      "event": "stage moved to proposal",
+      "timestamp": "2026-02-07T10:00:00Z",
+      "details": {
+        "deal_id": "deal_abc123",
+        "from_stage": "lead",
+        "to_stage": "proposal"
+      }
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "per_page": 25,
+    "total": 12,
+    "total_pages": 1
+  }
+}
+```
+
+## Deal activity
+
+Get the activity timeline for a deal.
+
+```bash
+GET /api/v1/deals/:id/activity
+```
+
+<ParamField query="page" type="integer" default="1">Page number</ParamField>
+<ParamField query="per_page" type="integer" default="25">Items per page (max 250)</ParamField>
+
+```bash Example
+curl "https://api.mosscrm.com/api/v1/deals/deal_abc123/activity" \
+  -H "X-API-Key: moss_k_..."
+```

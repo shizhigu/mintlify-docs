@@ -1,0 +1,137 @@
+---
+title: Core Concepts
+description: Understand the Moss data model — workspaces, contacts, companies, deals, and more.
+---
+
+## Workspaces
+
+A **workspace** is the top-level container for all your CRM data. Each workspace has its own contacts, deals, team members, and settings. You can belong to multiple workspaces and switch between them.
+
+Every API request and CLI command operates within a single workspace context, determined by your authentication token or the `--workspace` flag.
+
+## Contacts
+
+Contacts are the people you interact with. Each contact has:
+
+- **Name** (required), email, phone, title, company association
+- **Tags** for categorization
+- **Custom field** values
+- A **search vector** for full-text search across name, email, and notes
+
+Contacts can be linked to multiple deals and have an activity timeline showing all interactions, follow-ups, and deal changes.
+
+## Companies
+
+Companies represent organizations. A company has a name, domain, and can be associated with multiple contacts. When you link a contact to a company, all of that contact's deals appear in the company's context.
+
+## Deals
+
+Deals track revenue opportunities through a fixed pipeline. Each deal has:
+
+- **Title** (required), value, and stage
+- Links to one or more **contacts**
+- An **activity timeline**
+
+### Deal Stages
+
+Deals progress through these stages:
+
+| Stage | Description |
+|-------|-------------|
+| `lead` | Initial contact, not yet qualified |
+| `demo` | Discovery or demo scheduled/completed |
+| `proposal` | Proposal sent to prospect |
+| `negotiation` | Terms being negotiated |
+| `won` | Deal closed successfully |
+| `lost` | Deal did not close |
+
+Stages are enforced at the application level (not database enums), making them easy to evolve in future versions. Use `moss deal move` or `PATCH /api/deals/:id/stage` to advance a deal.
+
+## Interactions
+
+Interactions are logged touchpoints with contacts — emails, calls, meetings, or notes. Each interaction records:
+
+- **Type**: `email`, `call`, `meeting`, `note`
+- **Contact** and optional **deal** association
+- **Content** (free-text body)
+- **Occurred at** timestamp
+
+Interactions are immutable once created (no update endpoint) — you can only create or delete them.
+
+## Follow-ups
+
+Follow-ups are actionable reminders tied to contacts or deals. They have:
+
+- **Title**, **due date**, and **priority** (`low`, `medium`, `high`)
+- A **completed** flag
+- Contact and optional deal association
+
+Use `moss followup today` to see what's due today, or `moss followup overdue` to catch up on missed items.
+
+## Commitments
+
+Commitments track promises made to contacts — "I'll send the contract by Friday" or "We'll implement SSO by Q2." They differ from follow-ups in that they represent promises to others, not just internal reminders.
+
+Each commitment has a title, description, due date, and completed status.
+
+## Tags
+
+Tags provide flexible categorization across contacts, companies, and deals. Moss uses a **polymorphic tagging** system — a single tag can be applied to any entity type via a join table.
+
+Tags have a name and an optional color for display in the dashboard.
+
+## Custom Fields
+
+Custom fields let you extend the built-in schema with workspace-specific data. Each custom field defines:
+
+- **Name** and **field type** (`text`, `number`, `date`, `boolean`, `select`)
+- **Entity type** it applies to (contacts, companies, or deals)
+- **Options** (for select fields)
+
+Custom field values are stored per-entity and accessible via the API and CLI.
+
+## Authentication
+
+Moss supports two authentication methods:
+
+### Session-based (Dashboard)
+
+Browser sessions managed by Better Auth. Used automatically when you're signed into the dashboard. Not applicable for CLI or API integrations.
+
+### API Key (CLI + API)
+
+API keys are the primary auth method for programmatic access. Each key has:
+
+- A **prefix** (`moss_k_`) for easy identification
+- **Scopes** controlling what the key can access
+- A **workspace** binding
+
+Pass your API key via the `X-API-Key` header (API) or `--api-key` flag (CLI). Keys created in **Settings > API Keys** in the dashboard or via `moss key create`.
+
+## Pagination
+
+List endpoints return paginated results with this structure:
+
+```json
+{
+  "data": [...],
+  "meta": {
+    "page": 1,
+    "per_page": 25,
+    "total": 142,
+    "total_pages": 6
+  }
+}
+```
+
+Use `--page` and `--per-page` flags in the CLI, or `?page=` and `?per_page=` query parameters in the API.
+
+## Search
+
+Moss provides full-text search powered by PostgreSQL `tsvector` with GIN indexes. Search across contacts, companies, deals, and interactions with a single query:
+
+```bash
+moss search --q "acme enterprise"
+```
+
+The search endpoint returns results grouped by entity type, with relevance ranking.

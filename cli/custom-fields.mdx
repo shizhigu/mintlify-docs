@@ -1,0 +1,85 @@
+---
+title: custom-field
+description: Define, update, and delete custom field definitions for contacts, companies, and deals.
+---
+
+## moss custom-field list
+
+List custom field definitions.
+
+```bash
+moss custom-field list
+moss custom-field list --entity-type contact
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--entity-type <type>` | No | Filter by entity type: `contact`, `company`, or `deal` |
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+| `--sort <field>` | No | Sort field |
+| `--order <dir>` | No | Sort order (`asc` or `desc`) |
+
+## moss custom-field show
+
+Show a custom field definition.
+
+```bash
+moss custom-field show --id cfd_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Custom field definition ID |
+
+## moss custom-field create
+
+Create a new custom field definition.
+
+```bash
+moss custom-field create \
+  --entity-type contact \
+  --field-name "contract_tier" \
+  --field-label "Contract Tier" \
+  --field-type select \
+  --field-options "starter,pro,enterprise" \
+  --required
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--entity-type <type>` | Yes | Entity type: `contact`, `company`, or `deal` |
+| `--field-name <name>` | Yes | Field name in `snake_case` |
+| `--field-label <label>` | Yes | Human-readable display label |
+| `--field-type <type>` | Yes | Field type: `text`, `number`, `date`, `select`, `url`, or `boolean` |
+| `--field-options <opts>` | No | Comma-separated options (for `select` type) |
+| `--required` | No | Mark field as required |
+| `--display-order <n>` | No | Display order (default: 0) |
+
+## moss custom-field update
+
+Update a custom field definition. Field name and type cannot be changed after creation.
+
+```bash
+moss custom-field update --id cfd_abc123 --field-label "Support Tier"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Custom field definition ID |
+| `--field-label <label>` | No | Display label |
+| `--field-options <opts>` | No | Comma-separated options (for `select` type) |
+| `--required <bool>` | No | Required: `true` or `false` |
+| `--display-order <n>` | No | Display order |
+
+## moss custom-field delete
+
+Delete a custom field definition. This also removes all values of this field from all entities.
+
+```bash
+moss custom-field delete --id cfd_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Custom field definition ID |

@@ -1,0 +1,40 @@
+---
+title: Pipeline
+description: Get an aggregated summary of your deal pipeline.
+---
+
+<Snippet file="auth-header.mdx" />
+
+## Get pipeline summary
+
+Returns deal counts and total values grouped by stage.
+
+```bash
+GET /api/v1/pipeline
+```
+
+```bash Example
+curl https://api.mosscrm.com/api/v1/pipeline \
+  -H "X-API-Key: moss_k_..."
+```
+
+### Response
+
+```json
+{
+  "data": {
+    "lead": { "count": 12, "value": 4500000 },
+    "prospect": { "count": 8, "value": 12000000 },
+    "negotiation": { "count": 3, "value": 8500000 },
+    "won": { "count": 15, "value": 34000000 },
+    "lost": { "count": 6, "value": 2800000 }
+  }
+}
+```
+
+Each stage contains:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `count` | integer | Number of deals in this stage |
+| `value` | integer | Total value of deals in this stage (in cents) |

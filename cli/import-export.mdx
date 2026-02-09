@@ -1,0 +1,103 @@
+---
+title: import / export
+description: Bulk import data from files and export data to CSV or JSON.
+---
+
+## Import Commands
+
+### moss import create
+
+Start a data import job. The file must be accessible via URL.
+
+```bash
+moss import create \
+  --entity-type contacts \
+  --file-url "https://storage.example.com/contacts.csv"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--entity-type <type>` | Yes | Entity type: `contacts`, `companies`, or `deals` |
+| `--file-url <url>` | Yes | URL of the file to import |
+
+Returns a job ID that you can use to check status.
+
+### moss import status
+
+Check the status of an import job.
+
+```bash
+moss import status --id job_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Import job ID |
+
+```bash
+moss import status --id job_abc123 --json
+```
+
+```json
+{
+  "data": {
+    "id": "job_abc123",
+    "entity_type": "contacts",
+    "status": "completed",
+    "total_rows": 150,
+    "imported_rows": 148,
+    "failed_rows": 2,
+    "created_at": "2026-02-08T12:00:00Z",
+    "completed_at": "2026-02-08T12:01:30Z"
+  }
+}
+```
+
+---
+
+## Export Commands
+
+### moss export create
+
+Start a data export job.
+
+```bash
+moss export create --entity-type contacts --format csv
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--entity-type <type>` | Yes | Entity type: `contacts`, `companies`, or `deals` |
+| `--format <format>` | No | Export format: `csv` (default) or `json` |
+
+Returns a job ID that you can use to check status and download the file.
+
+### moss export status
+
+Check the status of an export job.
+
+```bash
+moss export status --id job_def456
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Export job ID |
+
+```bash
+moss export status --id job_def456 --json
+```
+
+```json
+{
+  "data": {
+    "id": "job_def456",
+    "entity_type": "contacts",
+    "format": "csv",
+    "status": "completed",
+    "download_url": "https://storage.mosscrm.com/exports/job_def456.csv",
+    "created_at": "2026-02-08T12:00:00Z",
+    "completed_at": "2026-02-08T12:00:45Z"
+  }
+}
+```

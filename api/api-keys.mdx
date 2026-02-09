@@ -1,0 +1,64 @@
+---
+title: API Keys
+description: Create, list, and revoke API keys.
+---
+
+<Snippet file="auth-header.mdx" />
+
+All API key endpoints require **owner** role.
+
+## List API keys
+
+```bash
+GET /api/v1/keys
+```
+
+<ParamField query="page" type="integer" default="1">Page number</ParamField>
+<ParamField query="per_page" type="integer" default="25">Items per page (max 250)</ParamField>
+<ParamField query="sort" type="string">Sort field</ParamField>
+<ParamField query="order" type="string" default="desc">Sort order: `asc` or `desc`</ParamField>
+
+<Note>
+The full API key value is only returned at creation time. The list endpoint shows key metadata (name, scope, prefix) but not the full key.
+</Note>
+
+## Create an API key
+
+```bash
+POST /api/v1/keys
+```
+
+<ParamField body="name" type="string" required>Human-readable name for the key</ParamField>
+<ParamField body="scope" type="string" default="full">Scope: `full` or `read_only`</ParamField>
+<ParamField body="expires_at" type="string">Expiration date (ISO 8601 datetime)</ParamField>
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/keys \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "ci-deploy", "scope": "full" }'
+```
+
+### Response
+
+```json
+{
+  "data": {
+    "id": "key_abc123",
+    "name": "ci-deploy",
+    "key": "moss_k_abc123def456...",
+    "scope": "full",
+    "created_at": "2026-02-08T12:00:00Z"
+  }
+}
+```
+
+Store the `key` value securely. It will not be shown again.
+
+## Revoke an API key
+
+Immediately invalidates the key. Any requests using this key will return `401 Unauthorized`.
+
+```bash
+DELETE /api/v1/keys/:id
+```

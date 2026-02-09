@@ -1,0 +1,122 @@
+---
+title: contact
+description: Create, list, update, search, merge, and delete contacts.
+---
+
+## moss contact list
+
+List contacts with optional filtering and pagination.
+
+```bash
+moss contact list
+moss contact list --q "acme" --tag enterprise --page 2
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+| `--sort <field>` | No | Sort field |
+| `--order <dir>` | No | Sort order (`asc` or `desc`) |
+| `--q <query>` | No | Full-text search query |
+| `--company-id <id>` | No | Filter by company |
+| `--tag <name>` | No | Filter by tag name |
+
+## moss contact show
+
+Show details for a single contact.
+
+```bash
+moss contact show --id cnt_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Contact ID |
+
+## moss contact create
+
+Create a new contact.
+
+```bash
+moss contact create \
+  --first-name "Jane" \
+  --last-name "Smith" \
+  --email "jane@acme.com" \
+  --title "CTO" \
+  --company-id cmp_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--first-name <name>` | Yes | First name |
+| `--last-name <name>` | No | Last name |
+| `--email <email>` | No | Email address |
+| `--phone <phone>` | No | Phone number |
+| `--title <title>` | No | Job title |
+| `--linkedin-url <url>` | No | LinkedIn profile URL |
+| `--company-id <id>` | No | Associated company ID |
+| `--notes <text>` | No | Free-text notes |
+| `--tags <tags>` | No | Comma-separated tag names |
+| `--set <key=value>` | No | Set a custom field value (repeatable) |
+
+## moss contact update
+
+Update an existing contact. Only specified fields are changed.
+
+```bash
+moss contact update --id cnt_abc123 --title "VP Engineering"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Contact ID |
+| `--first-name <name>` | No | First name |
+| `--last-name <name>` | No | Last name |
+| `--email <email>` | No | Email address |
+| `--phone <phone>` | No | Phone number |
+| `--title <title>` | No | Job title |
+| `--linkedin-url <url>` | No | LinkedIn profile URL |
+| `--company-id <id>` | No | Associated company ID |
+| `--notes <text>` | No | Free-text notes |
+| `--tags <tags>` | No | Comma-separated tag names |
+| `--set <key=value>` | No | Set a custom field value (repeatable) |
+
+## moss contact delete
+
+Delete a contact.
+
+```bash
+moss contact delete --id cnt_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Contact ID |
+
+## moss contact search
+
+Search contacts by name, email, or notes using full-text search.
+
+```bash
+moss contact search --q "jane smith"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--q <query>` | Yes | Search query |
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+
+## moss contact merge
+
+Merge two contacts. The source contact's data is merged into the target, and the source is deleted.
+
+```bash
+moss contact merge --source-id cnt_abc123 --target-id cnt_def456
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--source-id <id>` | Yes | Source contact ID (will be deleted) |
+| `--target-id <id>` | Yes | Target contact ID (will be kept) |

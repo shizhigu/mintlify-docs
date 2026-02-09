@@ -1,0 +1,58 @@
+---
+title: activity
+description: View activity timelines for contacts and deals.
+---
+
+## moss activity contact
+
+Show the activity timeline for a contact — interactions, deal changes, follow-ups, and commitments.
+
+```bash
+moss activity contact --id cnt_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Contact ID |
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+
+### JSON output
+
+```bash
+moss activity contact --id cnt_abc123 --json
+```
+
+```json
+{
+  "data": [
+    {
+      "type": "interaction",
+      "event": "meeting logged",
+      "timestamp": "2026-02-08T14:00:00Z",
+      "details": { "interaction_id": "int_abc123", "notes": "Discussed roadmap" }
+    },
+    {
+      "type": "deal",
+      "event": "stage moved to proposal",
+      "timestamp": "2026-02-07T10:00:00Z",
+      "details": { "deal_id": "deal_abc123" }
+    }
+  ],
+  "meta": { "page": 1, "per_page": 25, "total": 12, "total_pages": 1 }
+}
+```
+
+## moss activity deal
+
+Show the activity timeline for a deal.
+
+```bash
+moss activity deal --id deal_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Deal ID |
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |

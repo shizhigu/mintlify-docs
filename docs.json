@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Moss",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#2D6A4F",
+    "light": "#52B788",
+    "dark": "#1B4332"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -14,55 +14,86 @@
         "tab": "Guides",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
+            "pages": ["index", "quickstart"]
+          },
+          {
+            "group": "Learn",
+            "pages": ["guides/concepts", "guides/ai-agents", "guides/ci-cd"]
+          }
+        ]
+      },
+      {
+        "tab": "CLI Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["cli/overview"]
+          },
+          {
+            "group": "Authentication",
+            "pages": ["cli/auth", "cli/workspaces", "cli/api-keys"]
+          },
+          {
+            "group": "CRM Data",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "cli/contacts",
+              "cli/companies",
+              "cli/deals",
+              "cli/interactions",
+              "cli/follow-ups",
+              "cli/commitments",
+              "cli/tags",
+              "cli/custom-fields"
             ]
           },
           {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
+            "group": "Views & Search",
+            "pages": ["cli/pipeline", "cli/search", "cli/activity"]
           },
           {
-            "group": "Writing content",
+            "group": "Operations",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "cli/webhooks",
+              "cli/import-export",
+              "cli/notifications",
+              "cli/audit",
+              "cli/queue"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API Reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Overview",
+            "pages": ["api/overview"]
+          },
+          {
+            "group": "CRM Resources",
             "pages": [
-              "api-reference/introduction"
+              "api/contacts",
+              "api/companies",
+              "api/deals",
+              "api/interactions",
+              "api/follow-ups",
+              "api/commitments",
+              "api/tags",
+              "api/custom-fields"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Views & Search",
+            "pages": ["api/pipeline", "api/search", "api/activity"]
+          },
+          {
+            "group": "Operations",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api/webhooks",
+              "api/import-export",
+              "api/workspaces",
+              "api/api-keys"
             ]
           }
         ]
@@ -71,14 +102,9 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "GitHub",
+          "href": "https://github.com/mosscrm",
+          "icon": "github"
         }
       ]
     }
@@ -91,32 +117,19 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@mosscrm.com"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://app.mosscrm.com"
     }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/mosscrm",
+      "x": "https://x.com/mosscrm"
     }
   }
 }

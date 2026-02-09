@@ -1,0 +1,80 @@
+---
+title: Workspaces
+description: Manage workspaces, members, and invitations.
+---
+
+<Snippet file="auth-header.mdx" />
+
+## List workspaces
+
+List all workspaces you belong to.
+
+```bash
+GET /api/v1/workspaces
+```
+
+```bash Example
+curl https://api.mosscrm.com/api/v1/workspaces \
+  -H "X-API-Key: moss_k_..."
+```
+
+## Create a workspace
+
+Requires **owner** role.
+
+```bash
+POST /api/v1/workspaces
+```
+
+<ParamField body="name" type="string" required>Workspace name</ParamField>
+<ParamField body="slug" type="string" required>URL-safe slug (lowercase alphanumeric and hyphens only)</ParamField>
+
+## List members
+
+List all members of the current workspace.
+
+```bash
+GET /api/v1/workspaces/members
+```
+
+## List invitations
+
+List pending invitations. Requires **owner** role.
+
+```bash
+GET /api/v1/workspaces/invites
+```
+
+## Create an invitation
+
+Invite a new member to the workspace. Requires **owner** role.
+
+```bash
+POST /api/v1/workspaces/invites
+```
+
+<ParamField body="email" type="string" required>Email address to invite</ParamField>
+<ParamField body="role" type="string" default="member">Role: `member` or `owner`</ParamField>
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/workspaces/invites \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{ "email": "bob@acme.com", "role": "member" }'
+```
+
+## Revoke an invitation
+
+Requires **owner** role.
+
+```bash
+DELETE /api/v1/workspaces/invites/:id
+```
+
+## Accept an invitation
+
+```bash
+POST /api/v1/workspaces/invites/accept
+```
+
+<ParamField body="token" type="string" required>Invite token</ParamField>

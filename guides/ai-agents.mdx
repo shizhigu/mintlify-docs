@@ -1,0 +1,171 @@
+---
+title: AI Agent Guide
+description: Use Moss with Claude Code, Cursor, Codex, or any AI agent for autonomous CRM management.
+---
+
+## Overview
+
+Moss is designed to be **agent-operable** — every action available in the dashboard can be performed via CLI or API. This makes Moss a natural fit for AI coding agents that can run shell commands or make HTTP requests.
+
+## How it works
+
+AI agents interact with Moss through:
+
+1. **CLI commands** — Agents execute `moss` commands in a terminal, using `--json` for structured output
+2. **API calls** — Agents make HTTP requests to the REST API with an `X-API-Key` header
+3. **Exit codes** — Agents can branch on success/failure using standardized exit codes
+
+## Compatible agents
+
+| Agent | Interface | Setup |
+|-------|-----------|-------|
+| Claude Code | CLI | Add instructions to `CLAUDE.md` |
+| Cursor | CLI or API | Configure in `.cursorrules` |
+| Codex | CLI or API | Add to system prompt |
+| Custom agents | API | Use any HTTP client |
+
+## Setting up Claude Code
+
+Add the following to your project's `CLAUDE.md`:
+
+```markdown
+## CRM Access
+
+This project uses Moss CRM. The CLI is available as `moss`.
+
+- Use `moss --json` for all commands to get structured output
+- API key is configured in `~/.moss/config.json`
+- Current workspace: <your-workspace-id>
+
+### Common tasks
+- Check pipeline: `moss pipeline show --json`
+- List today's follow-ups: `moss followup today --json`
+- Log an interaction: `moss interaction log --contact-id <id> --type note --content "..."`
+- Search contacts: `moss search --q "query" --json`
+```
+
+## Structured output with `--json`
+
+Every CLI command supports the `--json` flag, which outputs data in a consistent JSON envelope:
+
+```bash
+# Single resource
+moss contact show <id> --json
+```
+
+```json
+{
+  "data": {
+    "id": "cnt_abc123",
+    "name": "Jane Smith",
+    "email": "jane@acme.com"
+  }
+}
+```
+
+```bash
+# List
+moss contact list --json
+```
+
+```json
+{
+  "data": [
+    { "id": "cnt_abc123", "name": "Jane Smith" },
+    { "id": "cnt_def456", "name": "Bob Chen" }
+  ],
+  "meta": {
+    "page": 1,
+    "per_page": 25,
+    "total": 2,
+    "total_pages": 1
+  }
+}
+```
+
+## Exit codes for control flow
+
+Agents can use exit codes to handle errors programmatically:
+
+| Code | Meaning | Agent action |
+|------|---------|--------------|
+| `0` | Success | Proceed |
+| `1` | General error | Retry or report |
+| `2` | Validation error | Fix input and retry |
+| `3` | Authentication error | Re-authenticate |
+| `4` | Not found | Handle missing resource |
+| `5` | Rate limited | Back off and retry |
+
+Example in a script:
+
+```bash
+if moss contact show "$CONTACT_ID" --json > /dev/null 2>&1; then
+  echo "Contact exists"
+else
+  exit_code=$?
+  if [ $exit_code -eq 4 ]; then
+    echo "Contact not found, creating..."
+    moss contact create --name "$NAME" --email "$EMAIL" --json
+  fi
+fi
+```
+
+## Example agent flows
+
+### Daily CRM review
+
+```bash
+# Check overdue follow-ups
+moss followup overdue --json | jq '.data[] | "\(.title) — due \(.due_date)"'
+
+# Check today's follow-ups
+moss followup today --json | jq '.data[] | "\(.title) — \(.contact_name)"'
+
+# Get pipeline summary
+moss pipeline show --json | jq '.data'
+```
+
+### Post-meeting logging
+
+```bash
+# Log the interaction
+moss interaction log \
+  --contact-id cnt_abc123 \
+  --type meeting \
+  --content "Discussed Q2 roadmap. They want SSO before signing." \
+  --json
+
+# Create a follow-up
+moss followup create \
+  --title "Send SSO timeline to Jane" \
+  --contact-id cnt_abc123 \
+  --due-date 2026-02-10 \
+  --priority high \
+  --json
+
+# Record commitment
+moss commitment create \
+  --title "Deliver SSO implementation timeline" \
+  --contact-id cnt_abc123 \
+  --due-date 2026-02-10 \
+  --json
+```
+
+### Pipeline management
+
+```bash
+# Move deal to next stage
+moss deal move <deal-id> --stage proposal --json
+
+# Bulk move stale leads
+moss deal bulk-move --from-stage lead --to-stage lost \
+  --older-than 90d --json
+```
+
+## Best practices
+
+1. **Always use `--json`** — Table output is for humans; JSON output is for agents
+2. **Check exit codes** — Don't assume success; handle errors gracefully
+3. **Use `--request-id`** — Pass a unique request ID for tracing and debugging
+4. **Use `--idempotency-key`** — Prevent duplicate creates when retrying
+5. **Scope API keys** — Create a dedicated API key with minimum required scopes for each agent

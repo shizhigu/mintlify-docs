@@ -1,0 +1,73 @@
+---
+title: Custom Fields
+description: Define, update, and delete custom field definitions for contacts, companies, and deals.
+---
+
+<Snippet file="auth-header.mdx" />
+
+## List custom field definitions
+
+<ParamField query="page" type="integer" default="1">Page number</ParamField>
+<ParamField query="per_page" type="integer" default="25">Items per page (max 250)</ParamField>
+<ParamField query="sort" type="string">Sort field</ParamField>
+<ParamField query="order" type="string" default="desc">Sort order: `asc` or `desc`</ParamField>
+<ParamField query="entity_type" type="string">Filter by entity type: `contacts`, `companies`, or `deals`</ParamField>
+
+```bash
+GET /api/v1/custom-fields
+```
+
+## Get a custom field definition
+
+```bash
+GET /api/v1/custom-fields/:id
+```
+
+## Create a custom field definition
+
+```bash
+POST /api/v1/custom-fields
+```
+
+<ParamField body="entity_type" type="string" required>Entity type: `contacts`, `companies`, or `deals`</ParamField>
+<ParamField body="field_name" type="string" required>Field name in `snake_case` (lowercase letters, numbers, underscores)</ParamField>
+<ParamField body="field_label" type="string" required>Human-readable display label</ParamField>
+<ParamField body="field_type" type="string" required>Field type: `text`, `number`, `select`, `multiselect`, `date`, or `checkbox`</ParamField>
+<ParamField body="field_options" type="string[]">Options for `select` and `multiselect` types</ParamField>
+<ParamField body="required" type="boolean" default="false">Whether the field is required</ParamField>
+<ParamField body="display_order" type="integer" default="0">Display order (lower numbers appear first)</ParamField>
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/custom-fields \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "entity_type": "contacts",
+    "field_name": "contract_tier",
+    "field_label": "Contract Tier",
+    "field_type": "select",
+    "field_options": ["starter", "pro", "enterprise"],
+    "required": true
+  }'
+```
+
+## Update a custom field definition
+
+Field name and type cannot be changed after creation.
+
+```bash
+PATCH /api/v1/custom-fields/:id
+```
+
+<ParamField body="field_label" type="string">Display label</ParamField>
+<ParamField body="field_options" type="string[]">Options (for select/multiselect types)</ParamField>
+<ParamField body="required" type="boolean">Whether the field is required</ParamField>
+<ParamField body="display_order" type="integer">Display order</ParamField>
+
+## Delete a custom field definition
+
+Deletes the definition and all values across all entities.
+
+```bash
+DELETE /api/v1/custom-fields/:id
+```

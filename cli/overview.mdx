@@ -1,0 +1,126 @@
+---
+title: CLI Overview
+description: Global options, output modes, exit codes, and configuration for the Moss CLI.
+---
+
+## Installation
+
+<CodeGroup>
+```bash npm
+npm install -g mosscrm
+```
+
+```bash pnpm
+pnpm add -g mosscrm
+```
+</CodeGroup>
+
+## Global Options
+
+These options apply to every command:
+
+| Flag | Description |
+|------|-------------|
+| `--json` | Output as JSON instead of a table |
+| `--workspace <id>` | Override the active workspace ID |
+| `--api-key <key>` | Override the API key |
+| `--session-token <token>` | Override the session token |
+| `--api-url <url>` | Override the API base URL |
+| `--request-id <id>` | Attach a request ID for tracing |
+| `--idempotency-key <key>` | Idempotency key to prevent duplicate mutations |
+
+## Output Modes
+
+### Table (default)
+
+Human-readable table output. Column widths are fixed for consistent formatting.
+
+```bash
+moss contact list
+```
+
+```
+ID       Name          Email              Company
+──────── ───────────── ────────────────── ────────
+cnt_a1   Jane Smith    jane@acme.com      Acme Corp
+cnt_b2   Bob Chen      bob@startup.io     StartupIO
+```
+
+### JSON
+
+Machine-readable JSON output. Use `--json` with any command.
+
+```bash
+moss contact list --json
+```
+
+```json
+{
+  "data": [
+    { "id": "cnt_a1", "first_name": "Jane", "last_name": "Smith", "email": "jane@acme.com" }
+  ],
+  "meta": { "page": 1, "per_page": 25, "total": 1, "total_pages": 1 }
+}
+```
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| `0` | Success |
+| `1` | General error |
+| `2` | Validation error (invalid input) |
+| `3` | Authentication error (missing or invalid credentials) |
+| `4` | Not found |
+| `5` | Rate limited |
+
+Use exit codes for scripting and automation:
+
+```bash
+moss contact show --id cnt_abc123 --json
+if [ $? -eq 4 ]; then
+  echo "Contact not found"
+fi
+```
+
+## Configuration
+
+The CLI stores configuration at `~/.moss/config.json`:
+
+```json
+{
+  "active_workspace": "ws_abc123",
+  "workspaces": {
+    "ws_abc123": {
+      "api_key": "moss_k_...",
+      "api_url": "https://api.mosscrm.com"
+    }
+  }
+}
+```
+
+Credentials are saved via `moss auth login` and can be overridden per-command with `--api-key` and `--workspace`.
+
+## Command Groups
+
+| Group | Description |
+|-------|-------------|
+| [`auth`](/cli/auth) | Login, logout, and identity |
+| [`workspace`](/cli/workspaces) | Manage workspaces and invites |
+| [`key`](/cli/api-keys) | Manage API keys |
+| [`contact`](/cli/contacts) | Manage contacts |
+| [`company`](/cli/companies) | Manage companies |
+| [`deal`](/cli/deals) | Manage deals and deal-contact links |
+| [`interaction`](/cli/interactions) | Log and view interactions |
+| [`followup`](/cli/follow-ups) | Manage follow-ups |
+| [`commitment`](/cli/commitments) | Manage commitments |
+| [`tag`](/cli/tags) | Manage tags |
+| [`custom-field`](/cli/custom-fields) | Manage custom field definitions |
+| [`pipeline`](/cli/pipeline) | View pipeline summary |
+| [`search`](/cli/search) | Full-text search |
+| [`activity`](/cli/activity) | View activity timelines |
+| [`webhook`](/cli/webhooks) | Manage webhooks |
+| [`import` / `export`](/cli/import-export) | Bulk data import and export |
+| [`notification`](/cli/notifications) | Notification preferences |
+| [`audit`](/cli/audit) | View audit logs |
+| [`queue`](/cli/queue) | Dead letter queue management |

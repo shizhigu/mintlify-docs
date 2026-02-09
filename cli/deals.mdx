@@ -1,0 +1,168 @@
+---
+title: deal
+description: Manage deals, move stages, bulk operations, and deal-contact links.
+---
+
+## moss deal list
+
+List deals with optional filtering.
+
+```bash
+moss deal list
+moss deal list --stage proposal --min-value 10000
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+| `--sort <field>` | No | Sort field |
+| `--order <dir>` | No | Sort order (`asc` or `desc`) |
+| `--q <query>` | No | Full-text search query |
+| `--stage <stage>` | No | Filter by stage (`lead`, `prospect`, `negotiation`, `won`, `lost`) |
+| `--company-id <id>` | No | Filter by company |
+| `--contact-id <id>` | No | Filter by linked contact |
+| `--min-value <n>` | No | Minimum deal value |
+| `--max-value <n>` | No | Maximum deal value |
+| `--tag <name>` | No | Filter by tag name |
+
+## moss deal show
+
+Show details for a single deal.
+
+```bash
+moss deal show --id deal_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Deal ID |
+
+## moss deal create
+
+Create a new deal.
+
+```bash
+moss deal create \
+  --name "Acme Corp - Enterprise" \
+  --value 50000 \
+  --stage lead \
+  --company-id cmp_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--name <name>` | Yes | Deal name |
+| `--company-id <id>` | No | Company ID |
+| `--stage <stage>` | No | Stage (default: `lead`) |
+| `--value <n>` | No | Deal value |
+| `--currency <code>` | No | Currency code (default: `USD`) |
+| `--expected-close <date>` | No | Expected close date (`YYYY-MM-DD`) |
+| `--notes <text>` | No | Free-text notes |
+| `--tags <tags>` | No | Comma-separated tag names |
+| `--set <key=value>` | No | Set a custom field value (repeatable) |
+
+## moss deal update
+
+Update an existing deal.
+
+```bash
+moss deal update --id deal_abc123 --value 75000
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Deal ID |
+| `--name <name>` | No | Deal name |
+| `--company-id <id>` | No | Company ID |
+| `--value <n>` | No | Deal value |
+| `--currency <code>` | No | Currency code |
+| `--expected-close <date>` | No | Expected close date (`YYYY-MM-DD`) |
+| `--notes <text>` | No | Free-text notes |
+| `--tags <tags>` | No | Comma-separated tag names |
+| `--set <key=value>` | No | Set a custom field value (repeatable) |
+
+## moss deal move
+
+Move a deal to a new stage.
+
+```bash
+moss deal move --id deal_abc123 --stage proposal
+moss deal move --id deal_abc123 --stage lost --lost-reason "Budget cut"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Deal ID |
+| `--stage <stage>` | Yes | Target stage |
+| `--lost-reason <reason>` | No | Reason (when moving to `lost`) |
+
+## moss deal bulk-move
+
+Move multiple deals to a new stage at once.
+
+```bash
+moss deal bulk-move --ids deal_a1,deal_b2,deal_c3 --stage negotiation
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--ids <ids>` | Yes | Comma-separated deal IDs |
+| `--stage <stage>` | Yes | Target stage |
+
+## moss deal delete
+
+Delete a deal.
+
+```bash
+moss deal delete --id deal_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Deal ID |
+
+---
+
+## Deal Contact Commands
+
+Manage contacts linked to a deal.
+
+### moss deal contact list
+
+List contacts linked to a deal.
+
+```bash
+moss deal contact list --deal-id deal_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--deal-id <id>` | Yes | Deal ID |
+
+### moss deal contact link
+
+Link a contact to a deal.
+
+```bash
+moss deal contact link --deal-id deal_abc123 --contact-id cnt_def456 --role "Decision Maker"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--deal-id <id>` | Yes | Deal ID |
+| `--contact-id <id>` | Yes | Contact ID |
+| `--role <role>` | No | Contact's role in the deal |
+
+### moss deal contact unlink
+
+Remove a contact from a deal.
+
+```bash
+moss deal contact unlink --deal-id deal_abc123 --contact-id cnt_def456
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--deal-id <id>` | Yes | Deal ID |
+| `--contact-id <id>` | Yes | Contact ID |

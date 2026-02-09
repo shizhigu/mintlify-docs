@@ -1,97 +1,30 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: Moss Documentation
+description: The agent-operable CRM for technical founders. Dashboard, CLI, and API with full mutation parity.
 ---
 
-## Setting up
+# Moss Documentation
 
-Get your documentation site up and running in minutes.
+Moss is a CRM built for technical founders running 1-5 person B2B SaaS companies. It provides three first-class interfaces — **Dashboard**, **CLI**, and **API** — all with full mutation parity, so you can manage your pipeline from wherever you work.
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Getting Started" icon="rocket" href="/quickstart">
+    Install the CLI and create your first contact in under 2 minutes.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="CLI Reference" icon="terminal" href="/cli/overview">
+    20 command groups, 80+ commands. Full reference with flags and examples.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="API Reference" icon="code" href="/api/overview">
+    74 REST endpoints. JSON envelope, pagination, idempotency keys.
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="AI Agent Guide" icon="robot" href="/guides/ai-agents">
+    Use Moss with Claude Code, Cursor, Codex, or any AI agent.
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## Why Moss?
 
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
-
-## Need inspiration?
-
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+- **Agent-operable** — Every mutation available in the dashboard is available via CLI and API. AI agents can manage your CRM autonomously.
+- **Opinionated schema** — Contacts, companies, deals, interactions, follow-ups, commitments, and tags. No custom objects to configure.
+- **Built for speed** — Full-text search across all entities, keyboard shortcuts in the dashboard, `--json` output in the CLI for scripting.
+- **Workspace-based** — Invite your team, manage API keys, configure webhooks. Per-workspace pricing starting at $0/month.

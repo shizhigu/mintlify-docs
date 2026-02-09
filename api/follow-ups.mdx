@@ -1,0 +1,96 @@
+---
+title: Follow-ups
+description: Create, update, complete, and manage follow-up reminders.
+---
+
+<Snippet file="auth-header.mdx" />
+
+## List follow-ups
+
+<ParamField query="page" type="integer" default="1">Page number</ParamField>
+<ParamField query="per_page" type="integer" default="25">Items per page (max 250)</ParamField>
+<ParamField query="sort" type="string">Sort field</ParamField>
+<ParamField query="order" type="string" default="desc">Sort order: `asc` or `desc`</ParamField>
+<ParamField query="contact_id" type="string">Filter by contact ID</ParamField>
+<ParamField query="deal_id" type="string">Filter by deal ID</ParamField>
+<ParamField query="status" type="string">Filter by status: `pending` or `completed`</ParamField>
+<ParamField query="type" type="string">Filter by type: `call`, `email`, `meeting`, or `task`</ParamField>
+<ParamField query="overdue" type="boolean">Show only overdue follow-ups</ParamField>
+<ParamField query="due" type="string">Filter by due date (`YYYY-MM-DD`)</ParamField>
+
+```bash
+GET /api/v1/follow-ups
+```
+
+```bash Example
+curl "https://api.mosscrm.com/api/v1/follow-ups?status=pending&overdue=true" \
+  -H "X-API-Key: moss_k_..."
+```
+
+## Get a follow-up
+
+```bash
+GET /api/v1/follow-ups/:id
+```
+
+## Create a follow-up
+
+```bash
+POST /api/v1/follow-ups
+```
+
+<ParamField body="contact_id" type="string" required>Contact ID (UUID)</ParamField>
+<ParamField body="type" type="string" required>Type: `call`, `email`, `meeting`, or `task`</ParamField>
+<ParamField body="deal_id" type="string">Associated deal ID (UUID)</ParamField>
+<ParamField body="description" type="string">Description</ParamField>
+<ParamField body="due_date" type="string" required>Due date (`YYYY-MM-DD`)</ParamField>
+<ParamField body="status" type="string" default="pending">Status: `pending` or `completed`</ParamField>
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/follow-ups \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contact_id": "cnt_abc123",
+    "type": "call",
+    "description": "Follow up on proposal",
+    "due_date": "2026-02-15"
+  }'
+```
+
+## Update a follow-up
+
+```bash
+PATCH /api/v1/follow-ups/:id
+```
+
+<ParamField body="type" type="string">Type</ParamField>
+<ParamField body="description" type="string">Description</ParamField>
+<ParamField body="due_date" type="string">Due date (`YYYY-MM-DD`)</ParamField>
+<ParamField body="status" type="string">Status: `pending` or `completed`</ParamField>
+
+## Delete a follow-up
+
+```bash
+DELETE /api/v1/follow-ups/:id
+```
+
+## Complete a follow-up
+
+Mark a follow-up as completed.
+
+```bash
+PATCH /api/v1/follow-ups/:id/complete
+```
+
+No request body required. Returns the updated follow-up.
+
+## Bulk complete
+
+Complete multiple follow-ups at once.
+
+```bash
+PATCH /api/v1/follow-ups/bulk-complete
+```
+
+<ParamField body="followup_ids" type="string[]" required>Array of follow-up IDs (max 100)</ParamField>

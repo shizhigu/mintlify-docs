@@ -1,0 +1,66 @@
+---
+title: queue dlq
+description: Manage the dead letter queue — list, replay, and discard failed events.
+---
+
+## moss queue dlq list
+
+List events in the dead letter queue. Requires owner role.
+
+```bash
+moss queue dlq list
+moss queue dlq list --queue-name webhooks --status failed
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+| `--queue-name <name>` | No | Filter by queue name (e.g., `webhooks`, `imports`, `exports`, `audit-fanout`, `digest`) |
+| `--status <status>` | No | Filter by status |
+
+### JSON output
+
+```bash
+moss queue dlq list --json
+```
+
+```json
+{
+  "data": [
+    {
+      "id": "dlq_abc123",
+      "queue_name": "webhooks",
+      "status": "failed",
+      "error_message": "Connection timeout to https://hooks.example.com/moss",
+      "payload": { "event": "contact.created", "contact_id": "cnt_abc123" },
+      "created_at": "2026-02-08T12:00:00Z"
+    }
+  ],
+  "meta": { "page": 1, "per_page": 25, "total": 3, "total_pages": 1 }
+}
+```
+
+## moss queue dlq replay
+
+Replay a failed DLQ event, re-adding it to the original queue for processing.
+
+```bash
+moss queue dlq replay --id dlq_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | DLQ event ID |
+
+## moss queue dlq discard
+
+Discard a DLQ event, marking it as resolved without reprocessing.
+
+```bash
+moss queue dlq discard --id dlq_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | DLQ event ID |

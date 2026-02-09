@@ -1,0 +1,85 @@
+---
+title: workspace
+description: Manage workspaces, switch context, and handle team invites.
+---
+
+## moss workspace list
+
+List all workspaces you belong to.
+
+```bash
+moss workspace list
+```
+
+## moss workspace switch
+
+Switch the active workspace.
+
+```bash
+moss workspace switch --id ws_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Workspace ID to switch to |
+
+---
+
+## Member Commands
+
+### moss workspace member list
+
+List members of the current workspace.
+
+```bash
+moss workspace member list
+```
+
+---
+
+## Invite Commands
+
+### moss workspace invite list
+
+List pending invitations for the current workspace.
+
+```bash
+moss workspace invite list
+```
+
+### moss workspace invite create
+
+Invite a new member to the workspace. Requires owner role.
+
+```bash
+moss workspace invite create --email "bob@acme.com" --role member
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--email <email>` | Yes | Email address to invite |
+| `--role <role>` | No | Role: `member` (default) or `owner` |
+
+### moss workspace invite revoke
+
+Revoke a pending invitation. Requires owner role.
+
+```bash
+moss workspace invite revoke --id inv_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Invite ID |
+
+### moss workspace invite accept
+
+Accept a workspace invitation.
+
+```bash
+moss workspace invite accept --token <invite-token>
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--token <token>` | Yes | Invite token |

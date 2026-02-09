@@ -1,0 +1,45 @@
+---
+title: audit
+description: View audit log entries for your workspace.
+---
+
+## moss audit list
+
+List audit log entries. Requires owner role.
+
+```bash
+moss audit list
+moss audit list --event-type "contact.created" --target-type "contact"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+| `--event-type <type>` | No | Filter by event type (e.g., `contact.created`, `deal.stage_moved`) |
+| `--target-type <type>` | No | Filter by target entity type (e.g., `contact`, `deal`, `company`) |
+| `--actor-type <type>` | No | Filter by actor type (e.g., `user`, `api_key`) |
+
+### JSON output
+
+```bash
+moss audit list --json
+```
+
+```json
+{
+  "data": [
+    {
+      "id": "aud_abc123",
+      "event_type": "deal.stage_moved",
+      "target_type": "deal",
+      "target_id": "deal_abc123",
+      "actor_type": "user",
+      "actor_id": "usr_abc123",
+      "metadata": { "from_stage": "lead", "to_stage": "proposal" },
+      "created_at": "2026-02-08T14:00:00Z"
+    }
+  ],
+  "meta": { "page": 1, "per_page": 25, "total": 156, "total_pages": 7 }
+}
+```

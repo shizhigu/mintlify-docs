@@ -1,0 +1,123 @@
+---
+title: Deals
+description: Manage deals, move stages, bulk stage changes, and deal-contact links.
+---
+
+<Snippet file="auth-header.mdx" />
+
+## List deals
+
+<ParamField query="page" type="integer" default="1">Page number</ParamField>
+<ParamField query="per_page" type="integer" default="25">Items per page (max 250)</ParamField>
+<ParamField query="sort" type="string">Sort field</ParamField>
+<ParamField query="order" type="string" default="desc">Sort order: `asc` or `desc`</ParamField>
+<ParamField query="q" type="string">Full-text search query</ParamField>
+<ParamField query="stage" type="string">Filter by stage: `lead`, `prospect`, `negotiation`, `won`, `lost`</ParamField>
+<ParamField query="company_id" type="string">Filter by company ID</ParamField>
+<ParamField query="contact_id" type="string">Filter by linked contact ID</ParamField>
+<ParamField query="min_value" type="number">Minimum deal value</ParamField>
+<ParamField query="max_value" type="number">Maximum deal value</ParamField>
+<ParamField query="tag" type="string">Filter by tag name</ParamField>
+
+```bash
+GET /api/v1/deals
+```
+
+## Get a deal
+
+```bash
+GET /api/v1/deals/:id
+```
+
+## Create a deal
+
+```bash
+POST /api/v1/deals
+```
+
+<ParamField body="name" type="string" required>Deal name</ParamField>
+<ParamField body="stage" type="string" default="lead">Stage: `lead`, `prospect`, `negotiation`, `won`, `lost`</ParamField>
+<ParamField body="value" type="integer">Deal value in cents</ParamField>
+<ParamField body="currency" type="string" default="USD">3-letter currency code</ParamField>
+<ParamField body="expected_close" type="string">Expected close date (`YYYY-MM-DD`)</ParamField>
+<ParamField body="company_id" type="string">Company ID (UUID)</ParamField>
+<ParamField body="notes" type="string">Free-text notes</ParamField>
+<ParamField body="tags" type="string[]">Array of tag names</ParamField>
+<ParamField body="custom_fields" type="object">Custom field values as key-value pairs</ParamField>
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/deals \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Acme Corp - Enterprise",
+    "stage": "lead",
+    "value": 5000000,
+    "currency": "USD",
+    "company_id": "cmp_abc123"
+  }'
+```
+
+## Update a deal
+
+```bash
+PATCH /api/v1/deals/:id
+```
+
+Accepts the same body fields as create (all optional), plus `lost_reason`.
+
+## Delete a deal
+
+```bash
+DELETE /api/v1/deals/:id
+```
+
+## Move deal stage
+
+Move a deal to a new pipeline stage.
+
+```bash
+PATCH /api/v1/deals/:id/stage
+```
+
+<ParamField body="stage" type="string" required>Target stage</ParamField>
+<ParamField body="lost_reason" type="string">Reason for loss (when moving to `lost`)</ParamField>
+
+## Bulk move stage
+
+Move multiple deals to a new stage at once.
+
+```bash
+PATCH /api/v1/deals/bulk-stage
+```
+
+<ParamField body="deal_ids" type="string[]" required>Array of deal IDs (max 100)</ParamField>
+<ParamField body="stage" type="string" required>Target stage</ParamField>
+<ParamField body="lost_reason" type="string">Reason for loss</ParamField>
+
+---
+
+## Deal Contacts
+
+Manage contacts linked to a deal.
+
+### List deal contacts
+
+```bash
+GET /api/v1/deals/:id/contacts
+```
+
+### Link a contact to a deal
+
+```bash
+POST /api/v1/deals/:id/contacts
+```
+
+<ParamField body="contact_id" type="string" required>Contact ID (UUID)</ParamField>
+<ParamField body="role" type="string">Contact's role in the deal (max 50 chars)</ParamField>
+
+### Unlink a contact from a deal
+
+```bash
+DELETE /api/v1/deals/:dealId/contacts/:contactId
+```

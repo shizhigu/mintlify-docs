@@ -1,0 +1,163 @@
+---
+title: CI/CD Integration
+description: Use Moss CLI and API in GitHub Actions, scripts, and automated workflows.
+---
+
+## Overview
+
+Moss works in any CI/CD environment. Use the CLI for shell-based workflows or the API for HTTP-based integrations. Both support `--json` output and API key authentication.
+
+## API key management
+
+Create a dedicated API key for CI/CD use:
+
+```bash
+moss key create --name "github-actions" --scope "read,write"
+```
+
+Store the key as a secret in your CI platform:
+
+- **GitHub Actions**: Repository Settings > Secrets > `MOSS_API_KEY`
+- **GitLab CI**: Settings > CI/CD > Variables > `MOSS_API_KEY`
+
+## GitHub Actions examples
+
+### Log deployment as interaction
+
+```yaml
+name: Post-deploy CRM update
+on:
+  deployment_status:
+    types: [success]
+
+jobs:
+  update-crm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Moss CLI
+        run: npm install -g mosscrm
+
+      - name: Log deployment
+        env:
+          MOSS_API_KEY: ${{ secrets.MOSS_API_KEY }}
+        run: |
+          moss interaction log \
+            --contact-id "${{ vars.CUSTOMER_CONTACT_ID }}" \
+            --type note \
+            --content "Deployed ${{ github.sha }} to production" \
+            --json
+```
+
+### Check overdue follow-ups on PR
+
+```yaml
+name: CRM health check
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  crm-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Moss CLI
+        run: npm install -g mosscrm
+
+      - name: Check overdue follow-ups
+        env:
+          MOSS_API_KEY: ${{ secrets.MOSS_API_KEY }}
+        run: |
+          OVERDUE=$(moss followup overdue --json | jq '.meta.total')
+          if [ "$OVERDUE" -gt 0 ]; then
+            echo "::warning::You have $OVERDUE overdue follow-ups"
+          fi
+```
+
+### Weekly pipeline report
+
+```yaml
+name: Weekly pipeline report
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Monday 9am
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Moss CLI
+        run: npm install -g mosscrm
+
+      - name: Generate report
+        env:
+          MOSS_API_KEY: ${{ secrets.MOSS_API_KEY }}
+        run: |
+          echo "## Pipeline Summary"
+          moss pipeline show --json | jq -r '
+            .data | to_entries[] |
+            "- **\(.key)**: \(.value) deals"
+          '
+```
+
+## API-based integration
+
+For environments where you can't install the CLI, use the REST API directly:
+
+```bash
+# Using curl
+curl -s https://api.mosscrm.com/api/contacts \
+  -H "X-API-Key: $MOSS_API_KEY" \
+  -H "Content-Type: application/json" | jq '.data'
+```
+
+```bash
+# Create a contact via API
+curl -s -X POST https://api.mosscrm.com/api/contacts \
+  -H "X-API-Key: $MOSS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Jane Smith", "email": "jane@acme.com"}' | jq '.data'
+```
+
+## Scripting patterns
+
+### Iterate over contacts
+
+```bash
+moss contact list --per-page 100 --json | jq -r '.data[].id' | while read id; do
+  moss contact show "$id" --json | jq '.data'
+done
+```
+
+### Export and transform
+
+```bash
+# Export contacts to CSV-like format
+moss contact list --per-page 100 --json | jq -r '
+  .data[] | [.name, .email, .company_name] | @csv
+'
+```
+
+### Conditional deal updates
+
+```bash
+# Move deals older than 30 days in lead stage
+moss deal list --stage lead --json | jq -r '
+  .data[] | select(.created_at < (now - 2592000 | strftime("%Y-%m-%d"))) | .id
+' | while read id; do
+  moss deal move "$id" --stage lost --json
+done
+```
+
+## Idempotency
+
+For CI/CD workflows that might retry, use idempotency keys to prevent duplicate operations:
+
+```bash
+moss contact create \
+  --name "Jane Smith" \
+  --email "jane@acme.com" \
+  --idempotency-key "deploy-${{ github.run_id }}" \
+  --json
+```
+
+The same idempotency key will return the original response without creating a duplicate.

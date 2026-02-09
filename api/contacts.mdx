@@ -1,0 +1,96 @@
+---
+title: Contacts
+description: Create, list, update, search, merge, and delete contacts.
+---
+
+<Snippet file="auth-header.mdx" />
+
+## List contacts
+
+<ParamField query="page" type="integer" default="1">Page number</ParamField>
+<ParamField query="per_page" type="integer" default="25">Items per page (max 250)</ParamField>
+<ParamField query="sort" type="string">Sort field</ParamField>
+<ParamField query="order" type="string" default="desc">Sort order: `asc` or `desc`</ParamField>
+<ParamField query="q" type="string">Full-text search query</ParamField>
+<ParamField query="company_id" type="string">Filter by company ID</ParamField>
+<ParamField query="tag" type="string">Filter by tag name</ParamField>
+
+```bash
+GET /api/v1/contacts
+```
+
+```bash Example
+curl https://api.mosscrm.com/api/v1/contacts?q=acme&tag=enterprise \
+  -H "X-API-Key: moss_k_..."
+```
+
+## Get a contact
+
+```bash
+GET /api/v1/contacts/:id
+```
+
+## Create a contact
+
+```bash
+POST /api/v1/contacts
+```
+
+<ParamField body="first_name" type="string" required>First name</ParamField>
+<ParamField body="last_name" type="string">Last name</ParamField>
+<ParamField body="email" type="string">Email address</ParamField>
+<ParamField body="phone" type="string">Phone number</ParamField>
+<ParamField body="title" type="string">Job title</ParamField>
+<ParamField body="linkedin_url" type="string">LinkedIn profile URL</ParamField>
+<ParamField body="company_id" type="string">Associated company ID (UUID)</ParamField>
+<ParamField body="notes" type="string">Free-text notes</ParamField>
+<ParamField body="tags" type="string[]">Array of tag names</ParamField>
+<ParamField body="custom_fields" type="object">Custom field values as key-value pairs</ParamField>
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/contacts \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "email": "jane@acme.com",
+    "title": "CTO",
+    "company_id": "cmp_abc123",
+    "tags": ["enterprise"]
+  }'
+```
+
+## Update a contact
+
+```bash
+PATCH /api/v1/contacts/:id
+```
+
+Accepts the same body fields as create. Only specified fields are updated.
+
+## Delete a contact
+
+```bash
+DELETE /api/v1/contacts/:id
+```
+
+Returns `{ "data": null }` on success.
+
+## Merge contacts
+
+Merge the source contact into the target contact. The source's interactions, deals, follow-ups, and commitments are reassigned to the target, then the source is deleted.
+
+```bash
+POST /api/v1/contacts/merge
+```
+
+<ParamField body="source_id" type="string" required>Source contact ID (will be deleted)</ParamField>
+<ParamField body="target_id" type="string" required>Target contact ID (will be kept)</ParamField>
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/contacts/merge \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{ "source_id": "cnt_abc123", "target_id": "cnt_def456" }'
+```

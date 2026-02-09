@@ -1,0 +1,73 @@
+---
+title: Companies
+description: Create, list, update, and delete companies.
+---
+
+<Snippet file="auth-header.mdx" />
+
+## List companies
+
+<ParamField query="page" type="integer" default="1">Page number</ParamField>
+<ParamField query="per_page" type="integer" default="25">Items per page (max 250)</ParamField>
+<ParamField query="sort" type="string">Sort field</ParamField>
+<ParamField query="order" type="string" default="desc">Sort order: `asc` or `desc`</ParamField>
+<ParamField query="q" type="string">Full-text search query</ParamField>
+<ParamField query="industry" type="string">Filter by industry</ParamField>
+<ParamField query="tag" type="string">Filter by tag name</ParamField>
+
+```bash
+GET /api/v1/companies
+```
+
+```bash Example
+curl https://api.mosscrm.com/api/v1/companies?industry=SaaS \
+  -H "X-API-Key: moss_k_..."
+```
+
+## Get a company
+
+```bash
+GET /api/v1/companies/:id
+```
+
+## Create a company
+
+```bash
+POST /api/v1/companies
+```
+
+<ParamField body="name" type="string" required>Company name</ParamField>
+<ParamField body="domain" type="string">Company domain (e.g., `acme.com`)</ParamField>
+<ParamField body="industry" type="string">Industry</ParamField>
+<ParamField body="size" type="string">Company size</ParamField>
+<ParamField body="notes" type="string">Free-text notes</ParamField>
+<ParamField body="tags" type="string[]">Array of tag names</ParamField>
+<ParamField body="custom_fields" type="object">Custom field values as key-value pairs</ParamField>
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/companies \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Acme Corp",
+    "domain": "acme.com",
+    "industry": "SaaS",
+    "size": "50-200"
+  }'
+```
+
+## Update a company
+
+```bash
+PATCH /api/v1/companies/:id
+```
+
+Accepts the same body fields as create. Only specified fields are updated.
+
+## Delete a company
+
+```bash
+DELETE /api/v1/companies/:id
+```
+
+Returns `{ "data": null }` on success.

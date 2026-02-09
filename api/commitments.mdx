@@ -1,0 +1,81 @@
+---
+title: Commitments
+description: Track promises made to contacts — create, update, complete, and delete.
+---
+
+<Snippet file="auth-header.mdx" />
+
+## List commitments
+
+<ParamField query="page" type="integer" default="1">Page number</ParamField>
+<ParamField query="per_page" type="integer" default="25">Items per page (max 250)</ParamField>
+<ParamField query="sort" type="string">Sort field</ParamField>
+<ParamField query="order" type="string" default="desc">Sort order: `asc` or `desc`</ParamField>
+<ParamField query="contact_id" type="string">Filter by contact ID</ParamField>
+<ParamField query="deal_id" type="string">Filter by deal ID</ParamField>
+<ParamField query="status" type="string">Filter by status: `open` or `completed`</ParamField>
+<ParamField query="overdue" type="boolean">Show only overdue commitments</ParamField>
+
+```bash
+GET /api/v1/commitments
+```
+
+```bash Example
+curl "https://api.mosscrm.com/api/v1/commitments?status=open&overdue=true" \
+  -H "X-API-Key: moss_k_..."
+```
+
+## Get a commitment
+
+```bash
+GET /api/v1/commitments/:id
+```
+
+## Create a commitment
+
+```bash
+POST /api/v1/commitments
+```
+
+<ParamField body="contact_id" type="string" required>Contact ID (UUID)</ParamField>
+<ParamField body="description" type="string" required>Description of the commitment</ParamField>
+<ParamField body="deal_id" type="string">Associated deal ID (UUID)</ParamField>
+<ParamField body="due_date" type="string">Due date (`YYYY-MM-DD`)</ParamField>
+<ParamField body="status" type="string" default="open">Status: `open` or `completed`</ParamField>
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/commitments \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contact_id": "cnt_abc123",
+    "description": "Deliver SSO implementation timeline",
+    "due_date": "2026-02-15"
+  }'
+```
+
+## Update a commitment
+
+```bash
+PATCH /api/v1/commitments/:id
+```
+
+<ParamField body="description" type="string">Description</ParamField>
+<ParamField body="due_date" type="string">Due date (`YYYY-MM-DD`)</ParamField>
+<ParamField body="status" type="string">Status: `open` or `completed`</ParamField>
+
+## Delete a commitment
+
+```bash
+DELETE /api/v1/commitments/:id
+```
+
+## Complete a commitment
+
+Mark a commitment as completed.
+
+```bash
+PATCH /api/v1/commitments/:id/complete
+```
+
+No request body required. Returns the updated commitment.

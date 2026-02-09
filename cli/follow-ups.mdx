@@ -1,0 +1,136 @@
+---
+title: followup
+description: Create, update, complete, and track follow-up reminders.
+---
+
+## moss followup list
+
+List follow-ups with optional filtering.
+
+```bash
+moss followup list
+moss followup list --contact-id cnt_abc123 --status pending
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+| `--sort <field>` | No | Sort field |
+| `--order <dir>` | No | Sort order (`asc` or `desc`) |
+| `--contact-id <id>` | No | Filter by contact |
+| `--deal-id <id>` | No | Filter by deal |
+| `--status <status>` | No | Filter by status (`pending`, `completed`) |
+| `--type <type>` | No | Filter by type (`call`, `email`, `meeting`, `task`) |
+| `--overdue` | No | Show only overdue follow-ups |
+| `--due <date>` | No | Filter by due date (`YYYY-MM-DD`) |
+
+## moss followup show
+
+Show details for a single follow-up.
+
+```bash
+moss followup show --id fu_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Follow-up ID |
+
+## moss followup create
+
+Create a new follow-up.
+
+```bash
+moss followup create \
+  --contact-id cnt_abc123 \
+  --type call \
+  --description "Follow up on proposal" \
+  --due-date 2026-02-15
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--contact-id <id>` | Yes | Contact ID |
+| `--type <type>` | Yes | Type: `call`, `email`, `meeting`, or `task` |
+| `--deal-id <id>` | No | Associated deal ID |
+| `--description <text>` | No | Description |
+| `--due-date <date>` | No | Due date (`YYYY-MM-DD`) |
+
+## moss followup update
+
+Update an existing follow-up.
+
+```bash
+moss followup update --id fu_abc123 --due-date 2026-02-20 --type email
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Follow-up ID |
+| `--type <type>` | No | Type |
+| `--description <text>` | No | Description |
+| `--due-date <date>` | No | Due date (`YYYY-MM-DD`) |
+| `--status <status>` | No | Status (`pending`, `completed`) |
+
+## moss followup complete
+
+Mark a follow-up as completed.
+
+```bash
+moss followup complete --id fu_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Follow-up ID |
+
+## moss followup today
+
+List follow-ups due today.
+
+```bash
+moss followup today
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+
+## moss followup overdue
+
+List overdue follow-ups.
+
+```bash
+moss followup overdue
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+
+## moss followup bulk-complete
+
+Complete multiple follow-ups at once.
+
+```bash
+moss followup bulk-complete --ids fu_a1,fu_b2,fu_c3
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--ids <ids>` | Yes | Comma-separated follow-up IDs |
+
+## moss followup delete
+
+Delete a follow-up.
+
+```bash
+moss followup delete --id fu_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Follow-up ID |

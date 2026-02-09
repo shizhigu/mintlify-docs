@@ -1,0 +1,88 @@
+---
+title: company
+description: Create, list, update, and delete companies.
+---
+
+## moss company list
+
+List companies with optional filtering and pagination.
+
+```bash
+moss company list
+moss company list --industry "SaaS" --tag enterprise
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+| `--sort <field>` | No | Sort field |
+| `--order <dir>` | No | Sort order (`asc` or `desc`) |
+| `--q <query>` | No | Full-text search query |
+| `--industry <industry>` | No | Filter by industry |
+| `--tag <name>` | No | Filter by tag name |
+
+## moss company show
+
+Show details for a single company.
+
+```bash
+moss company show --id cmp_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Company ID |
+
+## moss company create
+
+Create a new company.
+
+```bash
+moss company create \
+  --name "Acme Corp" \
+  --domain "acme.com" \
+  --industry "SaaS" \
+  --size "50-200"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--name <name>` | Yes | Company name |
+| `--domain <domain>` | No | Company domain |
+| `--industry <industry>` | No | Industry |
+| `--size <size>` | No | Company size |
+| `--notes <text>` | No | Free-text notes |
+| `--tags <tags>` | No | Comma-separated tag names |
+| `--set <key=value>` | No | Set a custom field value (repeatable) |
+
+## moss company update
+
+Update an existing company.
+
+```bash
+moss company update --id cmp_abc123 --size "200-500"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Company ID |
+| `--name <name>` | No | Company name |
+| `--domain <domain>` | No | Company domain |
+| `--industry <industry>` | No | Industry |
+| `--size <size>` | No | Company size |
+| `--notes <text>` | No | Free-text notes |
+| `--tags <tags>` | No | Comma-separated tag names |
+| `--set <key=value>` | No | Set a custom field value (repeatable) |
+
+## moss company delete
+
+Delete a company.
+
+```bash
+moss company delete --id cmp_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Company ID |

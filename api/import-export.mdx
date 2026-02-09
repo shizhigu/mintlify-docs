@@ -1,0 +1,109 @@
+---
+title: Import / Export
+description: Bulk import data from files and export data to CSV or JSON.
+---
+
+<Snippet file="auth-header.mdx" />
+
+## Create an import
+
+Start an asynchronous import job. Import creation requires **owner** role.
+
+```bash
+POST /api/v1/imports
+```
+
+<ParamField body="entity_type" type="string" required>Entity type: `contacts`, `companies`, or `deals`</ParamField>
+<ParamField body="file_url" type="string" required>URL of the file to import (must be accessible)</ParamField>
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/imports \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "entity_type": "contacts",
+    "file_url": "https://storage.example.com/contacts.csv"
+  }'
+```
+
+### Response
+
+```json
+{
+  "data": {
+    "id": "imp_abc123",
+    "entity_type": "contacts",
+    "status": "pending",
+    "created_at": "2026-02-08T12:00:00Z"
+  }
+}
+```
+
+## Get import status
+
+```bash
+GET /api/v1/imports/:id
+```
+
+### Response
+
+```json
+{
+  "data": {
+    "id": "imp_abc123",
+    "entity_type": "contacts",
+    "status": "completed",
+    "total_rows": 150,
+    "imported_rows": 148,
+    "failed_rows": 2,
+    "created_at": "2026-02-08T12:00:00Z",
+    "completed_at": "2026-02-08T12:01:30Z"
+  }
+}
+```
+
+Import statuses: `pending`, `processing`, `completed`, `failed`.
+
+---
+
+## Create an export
+
+Start an asynchronous export job.
+
+```bash
+POST /api/v1/exports
+```
+
+<ParamField body="entity_type" type="string" required>Entity type: `contacts`, `companies`, or `deals`</ParamField>
+<ParamField body="format" type="string" default="csv">Export format: `csv` or `json`</ParamField>
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/exports \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{ "entity_type": "contacts", "format": "csv" }'
+```
+
+## Get export status
+
+```bash
+GET /api/v1/exports/:id
+```
+
+### Response
+
+```json
+{
+  "data": {
+    "id": "exp_abc123",
+    "entity_type": "contacts",
+    "format": "csv",
+    "status": "completed",
+    "download_url": "https://storage.mosscrm.com/exports/exp_abc123.csv",
+    "created_at": "2026-02-08T12:00:00Z",
+    "completed_at": "2026-02-08T12:00:45Z"
+  }
+}
+```
+
+Export statuses: `pending`, `processing`, `completed`, `failed`. The `download_url` is available once the status is `completed`.

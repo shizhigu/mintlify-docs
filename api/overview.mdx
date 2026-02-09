@@ -1,0 +1,132 @@
+---
+title: API Overview
+description: Base URL, authentication, response envelope, error handling, pagination, and idempotency.
+---
+
+## Base URL
+
+```
+https://api.mosscrm.com/api/v1
+```
+
+All endpoints are prefixed with `/api/v1`.
+
+## Authentication
+
+Authenticate with an API key using the `X-API-Key` header:
+
+```bash
+curl https://api.mosscrm.com/api/v1/contacts \
+  -H "X-API-Key: moss_k_your_api_key_here"
+```
+
+API keys have two scopes:
+
+| Scope | Access |
+|-------|--------|
+| `full` | Read and write access to all endpoints |
+| `read_only` | Read-only access — mutations return `403 Forbidden` |
+
+Create API keys in the dashboard under **Settings > API Keys** or via [`moss key create`](/cli/api-keys).
+
+## Response Envelope
+
+All responses use a consistent JSON envelope.
+
+### Single resource
+
+```json
+{
+  "data": {
+    "id": "cnt_abc123",
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "email": "jane@acme.com"
+  }
+}
+```
+
+### List
+
+```json
+{
+  "data": [
+    { "id": "cnt_abc123", "first_name": "Jane" },
+    { "id": "cnt_def456", "first_name": "Bob" }
+  ],
+  "meta": {
+    "page": 1,
+    "per_page": 25,
+    "total": 142,
+    "total_pages": 6
+  }
+}
+```
+
+### Deletion
+
+```json
+{
+  "data": null
+}
+```
+
+## Error Responses
+
+Errors return an appropriate HTTP status code with a structured error body:
+
+```json
+{
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "Contact not found"
+  }
+}
+```
+
+| HTTP Status | Error Code | Description |
+|-------------|------------|-------------|
+| `400` | `VALIDATION_ERROR` | Invalid request body or parameters |
+| `401` | `UNAUTHORIZED` | Missing or invalid authentication |
+| `403` | `FORBIDDEN` | Insufficient permissions or scope |
+| `404` | `NOT_FOUND` | Resource not found |
+| `409` | `CONFLICT` | Duplicate or conflicting operation |
+| `429` | `RATE_LIMITED` | Too many requests |
+| `500` | `INTERNAL_ERROR` | Server error |
+
+## Pagination
+
+List endpoints accept these query parameters:
+
+| Parameter | Type | Default | Max | Description |
+|-----------|------|---------|-----|-------------|
+| `page` | integer | `1` | — | Page number (1-indexed) |
+| `per_page` | integer | `25` | `250` | Items per page |
+| `sort` | string | varies | — | Field to sort by |
+| `order` | string | `desc` | — | Sort order: `asc` or `desc` |
+
+Pagination metadata is included in the `meta` object of list responses.
+
+## Idempotency
+
+For mutation endpoints (POST, PATCH, DELETE), include the `Idempotency-Key` header to prevent duplicate operations:
+
+```bash
+curl -X POST https://api.mosscrm.com/api/v1/contacts \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: unique-request-id-123" \
+  -d '{"first_name": "Jane", "email": "jane@acme.com"}'
+```
+
+If the same idempotency key is sent again, the original response is returned without creating a duplicate.
+
+## Request Tracing
+
+Include the `X-Request-Id` header to attach a trace ID to your request. This ID appears in audit logs and can help with debugging.
+
+```bash
+curl https://api.mosscrm.com/api/v1/contacts \
+  -H "X-API-Key: moss_k_..." \
+  -H "X-Request-Id: req-abc-123"
+```

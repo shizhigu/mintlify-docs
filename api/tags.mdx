@@ -1,0 +1,41 @@
+---
+title: Tags
+description: Create, list, and delete tags for categorizing contacts, companies, and deals.
+---
+
+<Snippet file="auth-header.mdx" />
+
+## List tags
+
+<ParamField query="page" type="integer" default="1">Page number</ParamField>
+<ParamField query="per_page" type="integer" default="25">Items per page (max 250)</ParamField>
+<ParamField query="sort" type="string">Sort field</ParamField>
+<ParamField query="order" type="string" default="desc">Sort order: `asc` or `desc`</ParamField>
+
+```bash
+GET /api/v1/tags
+```
+
+## Create a tag
+
+```bash
+POST /api/v1/tags
+```
+
+<ParamField body="name" type="string" required>Tag name (1-100 characters)</ParamField>
+<ParamField body="color" type="string">Color as hex (`#RRGGBB`)</ParamField>
+
+```bash Example
+curl -X POST https://api.mosscrm.com/api/v1/tags \
+  -H "X-API-Key: moss_k_..." \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "enterprise", "color": "#2D6A4F" }'
+```
+
+## Delete a tag
+
+Deletes the tag and removes it from all entities.
+
+```bash
+DELETE /api/v1/tags/:id
+```

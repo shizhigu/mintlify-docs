@@ -1,0 +1,44 @@
+---
+title: tag
+description: Create, list, and delete tags for categorizing contacts, companies, and deals.
+---
+
+## moss tag list
+
+List all tags in the workspace.
+
+```bash
+moss tag list
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--page <n>` | No | Page number |
+| `--per-page <n>` | No | Items per page |
+| `--sort <field>` | No | Sort field |
+| `--order <dir>` | No | Sort order (`asc` or `desc`) |
+
+## moss tag create
+
+Create a new tag.
+
+```bash
+moss tag create --name "enterprise" --color "#2D6A4F"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--name <name>` | Yes | Tag name |
+| `--color <color>` | No | Color as hex (`#RRGGBB`) |
+
+## moss tag delete
+
+Delete a tag. This removes the tag from all entities it's applied to.
+
+```bash
+moss tag delete --id tag_abc123
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Tag ID |
