@@ -3,6 +3,8 @@ title: webhook
 description: Create, update, list, and delete webhooks.
 ---
 
+Webhooks push real-time event notifications to your own endpoints. Use them to trigger automations, sync data to external systems, or build custom integrations.
+
 ## moss webhook list
 
 List webhooks for the current workspace. Requires owner role.
@@ -70,9 +72,10 @@ moss webhook update --id wh_abc123 --events "contact.created,contact.updated"
 Delete a webhook. Requires owner role.
 
 ```bash
-moss webhook delete --id wh_abc123
+moss webhook delete --id wh_abc123 --confirm
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--id <id>` | Yes | Webhook ID |
+| `--confirm` | Yes | Confirm deletion (required for destructive operations) |

@@ -3,6 +3,8 @@ title: key
 description: Create, list, and revoke API keys.
 ---
 
+API keys let you authenticate programmatically — for CI/CD pipelines, automation scripts, or AI agents. Each key is scoped to a workspace and can be full-access or read-only.
+
 ## moss key list
 
 List API keys for the current workspace. Requires owner role.
@@ -56,9 +58,14 @@ moss key create --name "ci-deploy" --json
 Revoke an API key. Requires owner role. This immediately invalidates the key.
 
 ```bash
-moss key revoke --id key_abc123
+moss key revoke --id key_abc123 --confirm
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--id <id>` | Yes | Key ID |
+| `--confirm` | Yes | Confirm revocation (required for destructive operations) |
+
+<Warning>
+Revoking a key immediately invalidates it. Any automation using this key will stop working.
+</Warning>

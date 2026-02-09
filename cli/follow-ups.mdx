@@ -3,6 +3,8 @@ title: followup
 description: Create, update, complete, and track follow-up reminders.
 ---
 
+Follow-ups are your to-do list for staying in touch. Schedule a call, email, meeting, or any other action tied to a contact, and track it through to completion.
+
 ## moss followup list
 
 List follow-ups with optional filtering.
@@ -10,6 +12,7 @@ List follow-ups with optional filtering.
 ```bash
 moss followup list
 moss followup list --contact-id cnt_abc123 --status pending
+moss followup list --type call --overdue
 ```
 
 | Option | Required | Description |
@@ -20,8 +23,8 @@ moss followup list --contact-id cnt_abc123 --status pending
 | `--order <dir>` | No | Sort order (`asc` or `desc`) |
 | `--contact-id <id>` | No | Filter by contact |
 | `--deal-id <id>` | No | Filter by deal |
-| `--status <status>` | No | Filter by status (`pending`, `completed`) |
-| `--type <type>` | No | Filter by type (`call`, `email`, `meeting`, `task`) |
+| `--status <status>` | No | Filter by status (`pending`, `completed`, `skipped`) |
+| `--type <type>` | No | Filter by type (`call`, `email`, `meeting`, `other`) |
 | `--overdue` | No | Show only overdue follow-ups |
 | `--due <date>` | No | Filter by due date (`YYYY-MM-DD`) |
 
@@ -52,7 +55,7 @@ moss followup create \
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--contact-id <id>` | Yes | Contact ID |
-| `--type <type>` | Yes | Type: `call`, `email`, `meeting`, or `task` |
+| `--type <type>` | Yes | Type: `call`, `email`, `meeting`, or `other` |
 | `--deal-id <id>` | No | Associated deal ID |
 | `--description <text>` | No | Description |
 | `--due-date <date>` | No | Due date (`YYYY-MM-DD`) |
@@ -68,10 +71,10 @@ moss followup update --id fu_abc123 --due-date 2026-02-20 --type email
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--id <id>` | Yes | Follow-up ID |
-| `--type <type>` | No | Type |
+| `--type <type>` | No | Type: `call`, `email`, `meeting`, or `other` |
 | `--description <text>` | No | Description |
 | `--due-date <date>` | No | Due date (`YYYY-MM-DD`) |
-| `--status <status>` | No | Status (`pending`, `completed`) |
+| `--status <status>` | No | Status (`pending`, `completed`, `skipped`) |
 
 ## moss followup complete
 
@@ -116,21 +119,23 @@ moss followup overdue
 Complete multiple follow-ups at once.
 
 ```bash
-moss followup bulk-complete --ids fu_a1,fu_b2,fu_c3
+moss followup bulk-complete --ids fu_a1,fu_b2,fu_c3 --confirm
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--ids <ids>` | Yes | Comma-separated follow-up IDs |
+| `--confirm` | Yes | Confirm bulk operation (required) |
 
 ## moss followup delete
 
 Delete a follow-up.
 
 ```bash
-moss followup delete --id fu_abc123
+moss followup delete --id fu_abc123 --confirm
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--id <id>` | Yes | Follow-up ID |
+| `--confirm` | Yes | Confirm deletion (required for destructive operations) |

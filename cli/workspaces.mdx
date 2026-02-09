@@ -3,6 +3,8 @@ title: workspace
 description: Manage workspaces, switch context, and handle team invites.
 ---
 
+Workspaces are your team's home in MossDesk. Each workspace has its own contacts, deals, and settings. Use these commands to switch between workspaces, manage members, and send invites.
+
 ## moss workspace list
 
 List all workspaces you belong to.
@@ -35,6 +37,23 @@ List members of the current workspace.
 moss workspace member list
 ```
 
+### moss workspace member remove
+
+Remove a member from the workspace. Requires owner role.
+
+```bash
+moss workspace member remove --id usr_abc123 --confirm
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | User ID of the member to remove |
+| `--confirm` | Yes | Confirm removal (required for destructive operations) |
+
+<Warning>
+Removing a member revokes their access to this workspace immediately.
+</Warning>
+
 ---
 
 ## Invite Commands
@@ -65,12 +84,13 @@ moss workspace invite create --email "bob@acme.com" --role member
 Revoke a pending invitation. Requires owner role.
 
 ```bash
-moss workspace invite revoke --id inv_abc123
+moss workspace invite revoke --id inv_abc123 --confirm
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--id <id>` | Yes | Invite ID |
+| `--confirm` | Yes | Confirm revocation (required for destructive operations) |
 
 ### moss workspace invite accept
 

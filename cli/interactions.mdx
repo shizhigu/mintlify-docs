@@ -3,6 +3,8 @@ title: interaction
 description: Log and view interactions — calls, emails, meetings, and notes.
 ---
 
+Interactions are your record of every touchpoint with a contact — calls, emails, meetings, and notes. Log them as they happen to keep your team in sync.
+
 ## moss interaction list
 
 List interactions with optional filtering.
@@ -20,7 +22,7 @@ moss interaction list --contact-id cnt_abc123 --type call
 | `--order <dir>` | No | Sort order (`asc` or `desc`) |
 | `--contact-id <id>` | No | Filter by contact |
 | `--deal-id <id>` | No | Filter by deal |
-| `--type <type>` | No | Filter by type (`email`, `call`, `meeting`, `note`) |
+| `--type <type>` | No | Filter by type (`call`, `email`, `meeting`, `note`) |
 | `--q <query>` | No | Search query |
 
 ## moss interaction show
@@ -37,7 +39,7 @@ moss interaction show --id int_abc123
 
 ## moss interaction log
 
-Log a new interaction. Interactions are immutable — they can be created and deleted, but not updated.
+Log a new interaction.
 
 ```bash
 moss interaction log \
@@ -50,19 +52,38 @@ moss interaction log \
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--contact-id <id>` | Yes | Contact ID |
-| `--type <type>` | Yes | Type: `email`, `call`, `meeting`, or `note` |
+| `--type <type>` | Yes | Type: `call`, `email`, `meeting`, or `note` |
 | `--deal-id <id>` | No | Associated deal ID |
 | `--notes <text>` | No | Interaction notes / content |
-| `--occurred-at <datetime>` | No | When it occurred (ISO datetime) |
+| `--occurred-at <datetime>` | No | When it occurred (ISO datetime, defaults to now) |
+
+## moss interaction update
+
+Update an existing interaction's notes or timestamp.
+
+```bash
+moss interaction update --id int_abc123 --notes "Updated: discussed Q2 roadmap, agreed on pricing"
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Interaction ID |
+| `--notes <text>` | No | Updated notes |
+| `--occurred-at <datetime>` | No | Updated timestamp (ISO datetime) |
 
 ## moss interaction delete
 
 Delete an interaction.
 
 ```bash
-moss interaction delete --id int_abc123
+moss interaction delete --id int_abc123 --confirm
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--id <id>` | Yes | Interaction ID |
+| `--confirm` | Yes | Confirm deletion (required for destructive operations) |
+
+<Warning>
+This permanently deletes the interaction. This cannot be undone.
+</Warning>

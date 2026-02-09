@@ -3,6 +3,8 @@ title: contact
 description: Create, list, update, search, merge, and delete contacts.
 ---
 
+Contacts are the foundation of your CRM. Every interaction, deal, and follow-up ties back to a contact. Use these commands to manage your contact database from the terminal.
+
 ## moss contact list
 
 List contacts with optional filtering and pagination.
@@ -10,16 +12,18 @@ List contacts with optional filtering and pagination.
 ```bash
 moss contact list
 moss contact list --q "acme" --tag enterprise --page 2
+moss contact list --owner-id me
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--page <n>` | No | Page number |
 | `--per-page <n>` | No | Items per page |
-| `--sort <field>` | No | Sort field |
+| `--sort <field>` | No | Sort field (`first_name`, `last_name`, `email`, `created_at`) |
 | `--order <dir>` | No | Sort order (`asc` or `desc`) |
 | `--q <query>` | No | Full-text search query |
 | `--company-id <id>` | No | Filter by company |
+| `--owner-id <id>` | No | Filter by owner (UUID or `"me"` for current user) |
 | `--tag <name>` | No | Filter by tag name |
 
 ## moss contact show
@@ -44,7 +48,8 @@ moss contact create \
   --last-name "Smith" \
   --email "jane@acme.com" \
   --title "CTO" \
-  --company-id cmp_abc123
+  --company-id cmp_abc123 \
+  --owner-id me
 ```
 
 | Option | Required | Description |
@@ -56,16 +61,43 @@ moss contact create \
 | `--title <title>` | No | Job title |
 | `--linkedin-url <url>` | No | LinkedIn profile URL |
 | `--company-id <id>` | No | Associated company ID |
+| `--owner-id <id>` | No | Owner user ID |
 | `--notes <text>` | No | Free-text notes |
 | `--tags <tags>` | No | Comma-separated tag names |
 | `--set <key=value>` | No | Set a custom field value (repeatable) |
+
+## moss contact create-batch
+
+Create multiple contacts from a JSON file. Each object in the array takes the same fields as `moss contact create`.
+
+```bash
+moss contact create-batch --file contacts.json
+```
+
+```bash
+cat contacts.json | moss contact create-batch --file -
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--file <path>` | Yes | Path to JSON file containing an array of contact objects, or `"-"` for stdin |
+
+<Tip>
+The input file should be a JSON array:
+```json
+[
+  { "first_name": "Jane", "last_name": "Smith", "email": "jane@acme.com" },
+  { "first_name": "Bob", "last_name": "Chen", "email": "bob@startup.io" }
+]
+```
+</Tip>
 
 ## moss contact update
 
 Update an existing contact. Only specified fields are changed.
 
 ```bash
-moss contact update --id cnt_abc123 --title "VP Engineering"
+moss contact update --id cnt_abc123 --title "VP Engineering" --owner-id usr_def456
 ```
 
 | Option | Required | Description |
@@ -78,21 +110,27 @@ moss contact update --id cnt_abc123 --title "VP Engineering"
 | `--title <title>` | No | Job title |
 | `--linkedin-url <url>` | No | LinkedIn profile URL |
 | `--company-id <id>` | No | Associated company ID |
+| `--owner-id <id>` | No | Owner user ID |
 | `--notes <text>` | No | Free-text notes |
 | `--tags <tags>` | No | Comma-separated tag names |
 | `--set <key=value>` | No | Set a custom field value (repeatable) |
 
 ## moss contact delete
 
-Delete a contact.
+Delete a contact permanently.
 
 ```bash
-moss contact delete --id cnt_abc123
+moss contact delete --id cnt_abc123 --confirm
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--id <id>` | Yes | Contact ID |
+| `--confirm` | Yes | Confirm deletion (required for destructive operations) |
+
+<Warning>
+This permanently deletes the contact and all associated data. This cannot be undone.
+</Warning>
 
 ## moss contact search
 
@@ -113,10 +151,32 @@ moss contact search --q "jane smith"
 Merge two contacts. The source contact's data is merged into the target, and the source is deleted.
 
 ```bash
-moss contact merge --source-id cnt_abc123 --target-id cnt_def456
+moss contact merge --source-id cnt_abc123 --target-id cnt_def456 --confirm
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--source-id <id>` | Yes | Source contact ID (will be deleted) |
 | `--target-id <id>` | Yes | Target contact ID (will be kept) |
+| `--confirm` | Yes | Confirm merge (required for destructive operations) |
+
+<Warning>
+The source contact will be permanently deleted after merging. This cannot be undone.
+</Warning>
+
+---
+
+## Common Workflows
+
+List your own contacts, then export them:
+
+```bash
+moss contact list --owner-id me --json | jq '.data[].email'
+```
+
+Find duplicates by searching, then merge:
+
+```bash
+moss contact search --q "jane smith"
+moss contact merge --source-id cnt_older --target-id cnt_newer --confirm
+```

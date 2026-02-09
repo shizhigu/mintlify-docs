@@ -3,6 +3,8 @@ title: queue dlq
 description: Manage the dead letter queue — list, replay, and discard failed events.
 ---
 
+The dead letter queue (DLQ) captures events that failed to process — webhook delivery failures, import errors, and more. Review them here and decide whether to retry or discard.
+
 ## moss queue dlq list
 
 List events in the dead letter queue. Requires owner role.
@@ -16,7 +18,7 @@ moss queue dlq list --queue-name webhooks --status failed
 |--------|----------|-------------|
 | `--page <n>` | No | Page number |
 | `--per-page <n>` | No | Items per page |
-| `--queue-name <name>` | No | Filter by queue name (e.g., `webhooks`, `imports`, `exports`, `audit-fanout`, `digest`) |
+| `--queue-name <name>` | No | Filter by queue name (`webhooks`, `imports`, `exports`, `audit-fanout`, `digest`) |
 | `--status <status>` | No | Filter by status |
 
 ### JSON output

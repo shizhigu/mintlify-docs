@@ -3,7 +3,34 @@ title: import / export
 description: Bulk import data from files and export data to CSV or JSON.
 ---
 
+Import and export let you move data in and out of MossDesk in bulk. Use `import template` to get the right CSV format, `import create` to upload, and `export create` to download your data.
+
 ## Import Commands
+
+### moss import template
+
+Generate a CSV template with the correct headers and an example row. Use this to prepare your import file.
+
+```bash
+moss import template --entity-type contacts
+moss import template --entity-type companies
+moss import template --entity-type deals
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--entity-type <type>` | Yes | Entity type: `contacts`, `companies`, or `deals` |
+
+Example output for contacts:
+
+```
+first_name,last_name,email,phone,title,linkedin_url,notes
+Jane,Smith,jane@acme.com,+1-555-0100,CTO,https://linkedin.com/in/janesmith,Met at SaaStr 2026
+```
+
+<Tip>
+Run `moss import template --entity-type contacts > contacts.csv`, fill in your data, then upload it.
+</Tip>
 
 ### moss import create
 

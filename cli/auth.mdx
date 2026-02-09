@@ -1,11 +1,34 @@
 ---
 title: auth
-description: Login, logout, and view current authentication context.
+description: Authenticate the CLI via browser login or API key.
 ---
+
+Two ways to authenticate: browser-based SSO (`moss login`) for interactive use, or API key (`moss auth login --key ...`) for scripting and CI/CD.
+
+## moss login
+
+Log in via your browser. This is the recommended method for interactive use — it opens the MossDesk dashboard, you authorize the CLI, and credentials are saved automatically.
+
+```bash
+moss login
+```
+
+```bash
+moss login --no-browser --timeout 180
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--no-browser` | No | Print the URL instead of opening a browser (useful for headless/SSH environments) |
+| `--timeout <seconds>` | No | Timeout in seconds (default: `120`) |
+
+<Tip>
+`moss login` is a top-level command, not under `auth`. It's the fastest way to get started.
+</Tip>
 
 ## moss auth login
 
-Save an API key for a workspace.
+Save an API key for a workspace. Use this for non-interactive environments like CI pipelines or automation scripts.
 
 ```bash
 moss auth login --key moss_k_your_api_key_here

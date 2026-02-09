@@ -3,25 +3,29 @@ title: deal
 description: Manage deals, move stages, bulk operations, and deal-contact links.
 ---
 
+Deals represent revenue opportunities in your pipeline. Each deal has a stage, value, and optional links to contacts and companies. Use these commands to create, update, and move deals through your pipeline.
+
 ## moss deal list
 
 List deals with optional filtering.
 
 ```bash
 moss deal list
-moss deal list --stage proposal --min-value 10000
+moss deal list --stage qualified --min-value 10000
+moss deal list --owner-id me
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--page <n>` | No | Page number |
 | `--per-page <n>` | No | Items per page |
-| `--sort <field>` | No | Sort field |
+| `--sort <field>` | No | Sort field (`name`, `value`, `expected_close`, `created_at`) |
 | `--order <dir>` | No | Sort order (`asc` or `desc`) |
 | `--q <query>` | No | Full-text search query |
-| `--stage <stage>` | No | Filter by stage (`lead`, `prospect`, `negotiation`, `won`, `lost`) |
+| `--stage <stage>` | No | Filter by stage (`lead`, `qualified`, `proposal`, `negotiation`, `won`, `lost`) |
 | `--company-id <id>` | No | Filter by company |
 | `--contact-id <id>` | No | Filter by linked contact |
+| `--owner-id <id>` | No | Filter by owner (UUID or `"me"` for current user) |
 | `--min-value <n>` | No | Minimum deal value |
 | `--max-value <n>` | No | Maximum deal value |
 | `--tag <name>` | No | Filter by tag name |
@@ -47,27 +51,45 @@ moss deal create \
   --name "Acme Corp - Enterprise" \
   --value 50000 \
   --stage lead \
-  --company-id cmp_abc123
+  --company-id cmp_abc123 \
+  --owner-id me
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--name <name>` | Yes | Deal name |
 | `--company-id <id>` | No | Company ID |
-| `--stage <stage>` | No | Stage (default: `lead`) |
+| `--stage <stage>` | No | Stage: `lead`, `qualified`, `proposal`, `negotiation`, `won`, `lost` (default: `lead`) |
 | `--value <n>` | No | Deal value |
 | `--currency <code>` | No | Currency code (default: `USD`) |
 | `--expected-close <date>` | No | Expected close date (`YYYY-MM-DD`) |
+| `--owner-id <id>` | No | Owner user ID |
 | `--notes <text>` | No | Free-text notes |
 | `--tags <tags>` | No | Comma-separated tag names |
 | `--set <key=value>` | No | Set a custom field value (repeatable) |
+
+## moss deal create-batch
+
+Create multiple deals from a JSON file. Each object in the array takes the same fields as `moss deal create`.
+
+```bash
+moss deal create-batch --file deals.json
+```
+
+```bash
+cat deals.json | moss deal create-batch --file -
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--file <path>` | Yes | Path to JSON file containing an array of deal objects, or `"-"` for stdin |
 
 ## moss deal update
 
 Update an existing deal.
 
 ```bash
-moss deal update --id deal_abc123 --value 75000
+moss deal update --id deal_abc123 --value 75000 --owner-id usr_def456
 ```
 
 | Option | Required | Description |
@@ -78,6 +100,7 @@ moss deal update --id deal_abc123 --value 75000
 | `--value <n>` | No | Deal value |
 | `--currency <code>` | No | Currency code |
 | `--expected-close <date>` | No | Expected close date (`YYYY-MM-DD`) |
+| `--owner-id <id>` | No | Owner user ID |
 | `--notes <text>` | No | Free-text notes |
 | `--tags <tags>` | No | Comma-separated tag names |
 | `--set <key=value>` | No | Set a custom field value (repeatable) |
@@ -94,33 +117,39 @@ moss deal move --id deal_abc123 --stage lost --lost-reason "Budget cut"
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--id <id>` | Yes | Deal ID |
-| `--stage <stage>` | Yes | Target stage |
-| `--lost-reason <reason>` | No | Reason (when moving to `lost`) |
+| `--stage <stage>` | Yes | Target stage: `lead`, `qualified`, `proposal`, `negotiation`, `won`, `lost` |
+| `--lost-reason <reason>` | No | Reason (required when moving to `lost`) |
 
 ## moss deal bulk-move
 
 Move multiple deals to a new stage at once.
 
 ```bash
-moss deal bulk-move --ids deal_a1,deal_b2,deal_c3 --stage negotiation
+moss deal bulk-move --ids deal_a1,deal_b2,deal_c3 --stage negotiation --confirm
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--ids <ids>` | Yes | Comma-separated deal IDs |
-| `--stage <stage>` | Yes | Target stage |
+| `--stage <stage>` | Yes | Target stage: `lead`, `qualified`, `proposal`, `negotiation`, `won`, `lost` |
+| `--confirm` | Yes | Confirm bulk operation (required) |
 
 ## moss deal delete
 
-Delete a deal.
+Delete a deal permanently.
 
 ```bash
-moss deal delete --id deal_abc123
+moss deal delete --id deal_abc123 --confirm
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--id <id>` | Yes | Deal ID |
+| `--confirm` | Yes | Confirm deletion (required for destructive operations) |
+
+<Warning>
+This permanently deletes the deal. This cannot be undone.
+</Warning>
 
 ---
 

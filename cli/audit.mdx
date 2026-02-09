@@ -3,6 +3,8 @@ title: audit
 description: View audit log entries for your workspace.
 ---
 
+The audit log records every change made in your workspace — who did what, when, and to which record. Use it for compliance, debugging, or understanding how data has changed over time.
+
 ## moss audit list
 
 List audit log entries. Requires owner role.
@@ -43,3 +45,7 @@ moss audit list --json
   "meta": { "page": 1, "per_page": 25, "total": 156, "total_pages": 7 }
 }
 ```
+
+<Tip>
+Use `--actor-type api_key` to see changes made by automation and AI agents.
+</Tip>

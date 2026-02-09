@@ -3,6 +3,8 @@ title: pipeline
 description: View pipeline summary with deal counts and values by stage.
 ---
 
+The pipeline summary gives you a quick snapshot of where all your deals stand — how many are in each stage and their total value.
+
 ## moss pipeline show
 
 Display a summary of your deal pipeline — deal count and total value grouped by stage.
@@ -15,7 +17,8 @@ moss pipeline show
 Stage          Deals    Value
 ────────────── ──────── ──────────
 lead           12       $45,000
-prospect       8        $120,000
+qualified      8        $120,000
+proposal       5        $95,000
 negotiation    3        $85,000
 won            15       $340,000
 lost           6        $28,000
@@ -29,7 +32,8 @@ moss pipeline show --json
 {
   "data": {
     "lead": { "count": 12, "value": 45000 },
-    "prospect": { "count": 8, "value": 120000 },
+    "qualified": { "count": 8, "value": 120000 },
+    "proposal": { "count": 5, "value": 95000 },
     "negotiation": { "count": 3, "value": 85000 },
     "won": { "count": 15, "value": 340000 },
     "lost": { "count": 6, "value": 28000 }
@@ -38,3 +42,7 @@ moss pipeline show --json
 ```
 
 No options — this command always shows the full pipeline for the active workspace.
+
+<Tip>
+Pipe to `jq` to extract specific stages: `moss pipeline show --json | jq '.data.negotiation'`
+</Tip>

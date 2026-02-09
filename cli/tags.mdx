@@ -1,7 +1,9 @@
 ---
 title: tag
-description: Create, list, and delete tags for categorizing contacts, companies, and deals.
+description: Create, list, update, and delete tags for categorizing contacts, companies, and deals.
 ---
+
+Tags let you categorize and filter contacts, companies, and deals. Use them to segment your data however makes sense for your workflow — by industry, priority, source, or anything else.
 
 ## moss tag list
 
@@ -31,14 +33,33 @@ moss tag create --name "enterprise" --color "#2D6A4F"
 | `--name <name>` | Yes | Tag name |
 | `--color <color>` | No | Color as hex (`#RRGGBB`) |
 
-## moss tag delete
+## moss tag update
 
-Delete a tag. This removes the tag from all entities it's applied to.
+Update a tag's name or color.
 
 ```bash
-moss tag delete --id tag_abc123
+moss tag update --id tag_abc123 --name "Enterprise" --color "#1B4332"
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--id <id>` | Yes | Tag ID |
+| `--name <name>` | No | New tag name |
+| `--color <color>` | No | New color as hex (`#RRGGBB`) |
+
+## moss tag delete
+
+Delete a tag. This removes the tag from all entities it's applied to.
+
+```bash
+moss tag delete --id tag_abc123 --confirm
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--id <id>` | Yes | Tag ID |
+| `--confirm` | Yes | Confirm deletion (required for destructive operations) |
+
+<Warning>
+Deleting a tag removes it from every contact, company, and deal it's applied to.
+</Warning>

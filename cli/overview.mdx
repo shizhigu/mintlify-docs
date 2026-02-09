@@ -1,7 +1,11 @@
 ---
 title: CLI Overview
-description: Global options, output modes, exit codes, and configuration for the MossDesk CLI.
+description: Install, configure, and use the MossDesk CLI to manage your CRM from the terminal.
 ---
+
+<Info>
+**You don't need to memorize any of this.** If you use an AI agent like Claude Code, Cursor, or Copilot — just tell it what you need in plain language. Your agent can read this documentation and execute every command listed here on your behalf. You focus on decisions, your agent handles the syntax.
+</Info>
 
 ## Installation
 
@@ -14,6 +18,33 @@ npm install -g @mossdesk/cli
 pnpm add -g @mossdesk/cli
 ```
 </CodeGroup>
+
+Verify it works:
+
+```bash
+moss --version
+```
+
+## Quick Start
+
+Get up and running in five commands:
+
+```bash
+# 1. Log in via browser
+moss login
+
+# 2. Create a contact
+moss contact create --first-name "Jane" --last-name "Smith" --email "jane@acme.com"
+
+# 3. Create a deal
+moss deal create --name "Acme Enterprise" --value 50000 --stage lead
+
+# 4. Log an interaction
+moss interaction log --contact-id cnt_abc123 --type meeting --notes "Discussed Q2 roadmap"
+
+# 5. Check your pipeline
+moss pipeline show
+```
 
 ## Global Options
 
@@ -63,6 +94,10 @@ moss contact list --json
 }
 ```
 
+<Tip>
+Use `--json` when piping output to other tools like `jq`, or when your AI agent needs structured data to work with.
+</Tip>
+
 ## Exit Codes
 
 | Code | Meaning |
@@ -99,7 +134,7 @@ The CLI stores configuration at `~/.moss/config.json`:
 }
 ```
 
-Credentials are saved via `moss auth login` and can be overridden per-command with `--api-key` and `--workspace`.
+Credentials are saved via `moss login` (browser) or `moss auth login` (API key) and can be overridden per-command with `--api-key` and `--workspace`.
 
 ## Command Groups
 

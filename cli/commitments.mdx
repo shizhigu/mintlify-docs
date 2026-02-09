@@ -3,6 +3,8 @@ title: commitment
 description: Track promises made to contacts — create, update, complete, and delete commitments.
 ---
 
+Commitments track promises you've made to contacts — deliverables, timelines, or action items. Keep them visible so nothing falls through the cracks.
+
 ## moss commitment list
 
 List commitments with optional filtering.
@@ -20,7 +22,7 @@ moss commitment list --contact-id cnt_abc123 --status open --overdue
 | `--order <dir>` | No | Sort order (`asc` or `desc`) |
 | `--contact-id <id>` | No | Filter by contact |
 | `--deal-id <id>` | No | Filter by deal |
-| `--status <status>` | No | Filter by status (`open`, `completed`) |
+| `--status <status>` | No | Filter by status (`open`, `completed`, `cancelled`) |
 | `--overdue` | No | Show only overdue commitments |
 
 ## moss commitment show
@@ -59,6 +61,7 @@ Update an existing commitment.
 
 ```bash
 moss commitment update --id cmt_abc123 --due-date 2026-02-28
+moss commitment update --id cmt_abc123 --status cancelled
 ```
 
 | Option | Required | Description |
@@ -66,7 +69,7 @@ moss commitment update --id cmt_abc123 --due-date 2026-02-28
 | `--id <id>` | Yes | Commitment ID |
 | `--description <text>` | No | Description |
 | `--due-date <date>` | No | Due date (`YYYY-MM-DD`) |
-| `--status <status>` | No | Status (`open`, `completed`) |
+| `--status <status>` | No | Status (`open`, `completed`, `cancelled`) |
 
 ## moss commitment complete
 
@@ -85,9 +88,10 @@ moss commitment complete --id cmt_abc123
 Delete a commitment.
 
 ```bash
-moss commitment delete --id cmt_abc123
+moss commitment delete --id cmt_abc123 --confirm
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--id <id>` | Yes | Commitment ID |
+| `--confirm` | Yes | Confirm deletion (required for destructive operations) |

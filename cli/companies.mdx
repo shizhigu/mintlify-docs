@@ -3,6 +3,8 @@ title: company
 description: Create, list, update, and delete companies.
 ---
 
+Companies group your contacts under a shared organization. Link contacts and deals to companies to see the full picture of each account.
+
 ## moss company list
 
 List companies with optional filtering and pagination.
@@ -56,6 +58,22 @@ moss company create \
 | `--tags <tags>` | No | Comma-separated tag names |
 | `--set <key=value>` | No | Set a custom field value (repeatable) |
 
+## moss company create-batch
+
+Create multiple companies from a JSON file. Each object in the array takes the same fields as `moss company create`.
+
+```bash
+moss company create-batch --file companies.json
+```
+
+```bash
+cat companies.json | moss company create-batch --file -
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--file <path>` | Yes | Path to JSON file containing an array of company objects, or `"-"` for stdin |
+
 ## moss company update
 
 Update an existing company.
@@ -77,12 +95,17 @@ moss company update --id cmp_abc123 --size "200-500"
 
 ## moss company delete
 
-Delete a company.
+Delete a company permanently.
 
 ```bash
-moss company delete --id cmp_abc123
+moss company delete --id cmp_abc123 --confirm
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--id <id>` | Yes | Company ID |
+| `--confirm` | Yes | Confirm deletion (required for destructive operations) |
+
+<Warning>
+This permanently deletes the company. This cannot be undone.
+</Warning>

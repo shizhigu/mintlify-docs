@@ -3,6 +3,8 @@ title: custom-field
 description: Define, update, and delete custom field definitions for contacts, companies, and deals.
 ---
 
+Custom fields let you extend contacts, companies, and deals with data specific to your business — contract tiers, lead sources, or anything else the built-in fields don't cover.
+
 ## moss custom-field list
 
 List custom field definitions.
@@ -56,6 +58,10 @@ moss custom-field create \
 | `--required` | No | Mark field as required |
 | `--display-order <n>` | No | Display order (default: 0) |
 
+<Tip>
+Once created, `--field-name` and `--field-type` cannot be changed. Choose carefully.
+</Tip>
+
 ## moss custom-field update
 
 Update a custom field definition. Field name and type cannot be changed after creation.
@@ -77,9 +83,14 @@ moss custom-field update --id cfd_abc123 --field-label "Support Tier"
 Delete a custom field definition. This also removes all values of this field from all entities.
 
 ```bash
-moss custom-field delete --id cfd_abc123
+moss custom-field delete --id cfd_abc123 --confirm
 ```
 
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--id <id>` | Yes | Custom field definition ID |
+| `--confirm` | Yes | Confirm deletion (required for destructive operations) |
+
+<Warning>
+Deleting a custom field permanently removes it and all its values from every entity. This cannot be undone.
+</Warning>
