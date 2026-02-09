@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install MossDesk CLI
-        run: npm install -g mossdesk
+        run: npm install -g @mossdesk/cli
 
       - name: Log deployment
         env:
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install MossDesk CLI
-        run: npm install -g mossdesk
+        run: npm install -g @mossdesk/cli
 
       - name: Check overdue follow-ups
         env:
@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install MossDesk CLI
-        run: npm install -g mossdesk
+        run: npm install -g @mossdesk/cli
 
       - name: Generate report
         env:
