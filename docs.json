@@ -102,9 +102,9 @@
     "global": {
       "anchors": [
         {
-          "anchor": "GitHub",
-          "href": "https://github.com/mosscrm",
-          "icon": "github"
+          "anchor": "Status",
+          "href": "https://status.mosscrm.com",
+          "icon": "signal"
         }
       ]
     }
@@ -128,7 +128,6 @@
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/mosscrm",
       "x": "https://x.com/mosscrm"
     }
   }
