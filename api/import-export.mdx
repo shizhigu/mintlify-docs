@@ -17,7 +17,7 @@ POST /api/v1/imports
 <ParamField body="file_url" type="string" required>URL of the file to import (must be accessible)</ParamField>
 
 ```bash Example
-curl -X POST https://api.mosscrm.com/api/v1/imports \
+curl -X POST https://api.mossdesk.com/api/v1/imports \
   -H "X-API-Key: moss_k_..." \
   -H "Content-Type: application/json" \
   -d '{
@@ -78,7 +78,7 @@ POST /api/v1/exports
 <ParamField body="format" type="string" default="csv">Export format: `csv` or `json`</ParamField>
 
 ```bash Example
-curl -X POST https://api.mosscrm.com/api/v1/exports \
+curl -X POST https://api.mossdesk.com/api/v1/exports \
   -H "X-API-Key: moss_k_..." \
   -H "Content-Type: application/json" \
   -d '{ "entity_type": "contacts", "format": "csv" }'
@@ -99,7 +99,7 @@ GET /api/v1/exports/:id
     "entity_type": "contacts",
     "format": "csv",
     "status": "completed",
-    "download_url": "https://storage.mosscrm.com/exports/exp_abc123.csv",
+    "download_url": "https://storage.mossdesk.com/exports/exp_abc123.csv",
     "created_at": "2026-02-08T12:00:00Z",
     "completed_at": "2026-02-08T12:00:45Z"
   }

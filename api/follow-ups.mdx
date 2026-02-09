@@ -23,7 +23,7 @@ GET /api/v1/follow-ups
 ```
 
 ```bash Example
-curl "https://api.mosscrm.com/api/v1/follow-ups?status=pending&overdue=true" \
+curl "https://api.mossdesk.com/api/v1/follow-ups?status=pending&overdue=true" \
   -H "X-API-Key: moss_k_..."
 ```
 
@@ -47,7 +47,7 @@ POST /api/v1/follow-ups
 <ParamField body="status" type="string" default="pending">Status: `pending` or `completed`</ParamField>
 
 ```bash Example
-curl -X POST https://api.mosscrm.com/api/v1/follow-ups \
+curl -X POST https://api.mossdesk.com/api/v1/follow-ups \
   -H "X-API-Key: moss_k_..." \
   -H "Content-Type: application/json" \
   -d '{

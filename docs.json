@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Moss",
+  "name": "MossDesk",
   "colors": {
     "primary": "#2D6A4F",
     "light": "#52B788",
@@ -103,7 +103,7 @@
       "anchors": [
         {
           "anchor": "Status",
-          "href": "https://status.mosscrm.com",
+          "href": "https://status.mossdesk.com",
           "icon": "signal"
         }
       ]
@@ -117,18 +117,18 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:support@mosscrm.com"
+        "href": "mailto:support@mossdesk.com"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://app.mosscrm.com"
+      "href": "https://app.mossdesk.com"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mosscrm"
+      "x": "https://x.com/mossdesk"
     }
   }
 }

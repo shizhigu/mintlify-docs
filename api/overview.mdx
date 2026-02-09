@@ -6,7 +6,7 @@ description: Base URL, authentication, response envelope, error handling, pagina
 ## Base URL
 
 ```
-https://api.mosscrm.com/api/v1
+https://api.mossdesk.com/api/v1
 ```
 
 All endpoints are prefixed with `/api/v1`.
@@ -16,7 +16,7 @@ All endpoints are prefixed with `/api/v1`.
 Authenticate with an API key using the `X-API-Key` header:
 
 ```bash
-curl https://api.mosscrm.com/api/v1/contacts \
+curl https://api.mossdesk.com/api/v1/contacts \
   -H "X-API-Key: moss_k_your_api_key_here"
 ```
 
@@ -112,7 +112,7 @@ Pagination metadata is included in the `meta` object of list responses.
 For mutation endpoints (POST, PATCH, DELETE), include the `Idempotency-Key` header to prevent duplicate operations:
 
 ```bash
-curl -X POST https://api.mosscrm.com/api/v1/contacts \
+curl -X POST https://api.mossdesk.com/api/v1/contacts \
   -H "X-API-Key: moss_k_..." \
   -H "Content-Type: application/json" \
   -H "Idempotency-Key: unique-request-id-123" \
@@ -126,7 +126,7 @@ If the same idempotency key is sent again, the original response is returned wit
 Include the `X-Request-Id` header to attach a trace ID to your request. This ID appears in audit logs and can help with debugging.
 
 ```bash
-curl https://api.mosscrm.com/api/v1/contacts \
+curl https://api.mossdesk.com/api/v1/contacts \
   -H "X-API-Key: moss_k_..." \
   -H "X-Request-Id: req-abc-123"
 ```

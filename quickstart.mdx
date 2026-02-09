@@ -1,21 +1,21 @@
 ---
 title: Quickstart
-description: Set up Moss CLI and create your first CRM records in under 2 minutes.
+description: Set up MossDesk CLI and create your first CRM records in under 2 minutes.
 ---
 
 ## Install the CLI
 
 <CodeGroup>
 ```bash npm
-npm install -g mosscrm
+npm install -g mossdesk
 ```
 
 ```bash pnpm
-pnpm add -g mosscrm
+pnpm add -g mossdesk
 ```
 
 ```bash yarn
-yarn global add mosscrm
+yarn global add mossdesk
 ```
 </CodeGroup>
 
@@ -27,7 +27,7 @@ moss --version
 
 ## Authenticate
 
-Log in with your API key. You can create one from the [Dashboard](https://app.mosscrm.com) under **Settings > API Keys**.
+Log in with your API key. You can create one from the [Dashboard](https://app.mossdesk.com) under **Settings > API Keys**.
 
 ```bash
 moss auth login --key moss_k_your_api_key_here
@@ -89,15 +89,15 @@ moss contact list --json | jq '.data[].name'
 
 <CardGroup cols={2}>
   <Card title="Core Concepts" icon="book" href="/guides/concepts">
-    Learn about workspaces, deal stages, and the Moss data model.
+    Learn about workspaces, deal stages, and the MossDesk data model.
   </Card>
   <Card title="CLI Reference" icon="terminal" href="/cli/overview">
     Full command reference with all flags and options.
   </Card>
   <Card title="API Reference" icon="code" href="/api/overview">
-    Integrate Moss into your applications.
+    Integrate MossDesk into your applications.
   </Card>
   <Card title="AI Agent Guide" icon="robot" href="/guides/ai-agents">
-    Set up Moss for autonomous CRM management.
+    Set up MossDesk for autonomous CRM management.
   </Card>
 </CardGroup>

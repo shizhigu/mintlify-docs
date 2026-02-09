@@ -1,11 +1,11 @@
 ---
 title: CI/CD Integration
-description: Use Moss CLI and API in GitHub Actions, scripts, and automated workflows.
+description: Use MossDesk CLI and API in GitHub Actions, scripts, and automated workflows.
 ---
 
 ## Overview
 
-Moss works in any CI/CD environment. Use the CLI for shell-based workflows or the API for HTTP-based integrations. Both support `--json` output and API key authentication.
+MossDesk works in any CI/CD environment. Use the CLI for shell-based workflows or the API for HTTP-based integrations. Both support `--json` output and API key authentication.
 
 ## API key management
 
@@ -34,8 +34,8 @@ jobs:
   update-crm:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Moss CLI
-        run: npm install -g mosscrm
+      - name: Install MossDesk CLI
+        run: npm install -g mossdesk
 
       - name: Log deployment
         env:
@@ -60,8 +60,8 @@ jobs:
   crm-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Moss CLI
-        run: npm install -g mosscrm
+      - name: Install MossDesk CLI
+        run: npm install -g mossdesk
 
       - name: Check overdue follow-ups
         env:
@@ -85,8 +85,8 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Moss CLI
-        run: npm install -g mosscrm
+      - name: Install MossDesk CLI
+        run: npm install -g mossdesk
 
       - name: Generate report
         env:
@@ -105,14 +105,14 @@ For environments where you can't install the CLI, use the REST API directly:
 
 ```bash
 # Using curl
-curl -s https://api.mosscrm.com/api/contacts \
+curl -s https://api.mossdesk.com/api/contacts \
   -H "X-API-Key: $MOSS_API_KEY" \
   -H "Content-Type: application/json" | jq '.data'
 ```
 
 ```bash
 # Create a contact via API
-curl -s -X POST https://api.mosscrm.com/api/contacts \
+curl -s -X POST https://api.mossdesk.com/api/contacts \
   -H "X-API-Key: $MOSS_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"name": "Jane Smith", "email": "jane@acme.com"}' | jq '.data'

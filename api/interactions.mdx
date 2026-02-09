@@ -21,7 +21,7 @@ GET /api/v1/interactions
 ```
 
 ```bash Example
-curl "https://api.mosscrm.com/api/v1/interactions?contact_id=cnt_abc123&type=meeting" \
+curl "https://api.mossdesk.com/api/v1/interactions?contact_id=cnt_abc123&type=meeting" \
   -H "X-API-Key: moss_k_..."
 ```
 
@@ -46,7 +46,7 @@ POST /api/v1/interactions
 <ParamField body="occurred_at" type="string" required>When the interaction occurred (ISO 8601 datetime)</ParamField>
 
 ```bash Example
-curl -X POST https://api.mosscrm.com/api/v1/interactions \
+curl -X POST https://api.mossdesk.com/api/v1/interactions \
   -H "X-API-Key: moss_k_..." \
   -H "Content-Type: application/json" \
   -d '{

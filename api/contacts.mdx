@@ -20,7 +20,7 @@ GET /api/v1/contacts
 ```
 
 ```bash Example
-curl https://api.mosscrm.com/api/v1/contacts?q=acme&tag=enterprise \
+curl https://api.mossdesk.com/api/v1/contacts?q=acme&tag=enterprise \
   -H "X-API-Key: moss_k_..."
 ```
 
@@ -48,7 +48,7 @@ POST /api/v1/contacts
 <ParamField body="custom_fields" type="object">Custom field values as key-value pairs</ParamField>
 
 ```bash Example
-curl -X POST https://api.mosscrm.com/api/v1/contacts \
+curl -X POST https://api.mossdesk.com/api/v1/contacts \
   -H "X-API-Key: moss_k_..." \
   -H "Content-Type: application/json" \
   -d '{
@@ -89,7 +89,7 @@ POST /api/v1/contacts/merge
 <ParamField body="target_id" type="string" required>Target contact ID (will be kept)</ParamField>
 
 ```bash Example
-curl -X POST https://api.mosscrm.com/api/v1/contacts/merge \
+curl -X POST https://api.mossdesk.com/api/v1/contacts/merge \
   -H "X-API-Key: moss_k_..." \
   -H "Content-Type: application/json" \
   -d '{ "source_id": "cnt_abc123", "target_id": "cnt_def456" }'

@@ -1,6 +1,6 @@
 ---
 title: Core Concepts
-description: Understand the Moss data model — workspaces, contacts, companies, deals, and more.
+description: Understand the MossDesk data model — workspaces, contacts, companies, deals, and more.
 ---
 
 ## Workspaces
@@ -75,7 +75,7 @@ Each commitment has a title, description, due date, and completed status.
 
 ## Tags
 
-Tags provide flexible categorization across contacts, companies, and deals. Moss uses a **polymorphic tagging** system — a single tag can be applied to any entity type via a join table.
+Tags provide flexible categorization across contacts, companies, and deals. MossDesk uses a **polymorphic tagging** system — a single tag can be applied to any entity type via a join table.
 
 Tags have a name and an optional color for display in the dashboard.
 
@@ -91,7 +91,7 @@ Custom field values are stored per-entity and accessible via the API and CLI.
 
 ## Authentication
 
-Moss supports two authentication methods:
+MossDesk supports two authentication methods:
 
 ### Session-based (Dashboard)
 
@@ -127,7 +127,7 @@ Use `--page` and `--per-page` flags in the CLI, or `?page=` and `?per_page=` que
 
 ## Search
 
-Moss provides full-text search powered by PostgreSQL `tsvector` with GIN indexes. Search across contacts, companies, deals, and interactions with a single query:
+MossDesk provides full-text search powered by PostgreSQL `tsvector` with GIN indexes. Search across contacts, companies, deals, and interactions with a single query:
 
 ```bash
 moss search --q "acme enterprise"
